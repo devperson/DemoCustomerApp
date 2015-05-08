@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CustomerApp.RegistrationPage">
+  <!--<ScrollView>-->
+    <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Padding="20">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"></RowDefinition>
+        <RowDefinition Height="Auto"></RowDefinition>
+        <RowDefinition Height="Auto"></RowDefinition>
+        <RowDefinition Height="Auto"></RowDefinition>
+        <RowDefinition Height="Auto"></RowDefinition>
+        <RowDefinition Height="Auto"></RowDefinition>
+      </Grid.RowDefinitions>
+
+      <Label Text="First name:"></Label>
+      <Entry Grid.Column="1" Text="{Binding User.FirstName}" />
+
+      <Label Grid.Row="1" Text="Last name:"></Label>
+      <Entry Grid.Column="1" Grid.Row="1" Text="{Binding User.LastName}" />
+
+      <Label Grid.Row="2" Text="Phone:"></Label>
+      <Entry Grid.Column="1" Grid.Row="2" Text="{Binding User.Phone}" Keyboard="Numeric"/>
+
+      <Label Grid.Row="3" Text="User name:"></Label>
+      <Entry Grid.Column="1" Grid.Row="3" Text="{Binding User.UserName}" />
+
+      <Label Grid.Row="4" Text="Password:"></Label>
+      <Entry Grid.Column="1" Grid.Row="4" Text="{Binding User.Password}" />
+
+      <ContentView Padding="20" Grid.Row="5" Grid.ColumnSpan="2">
+        <Button Text="Submit" Clicked="Submit_Clicked"></Button>
+      </ContentView>
+
+    </Grid>
+  <!--</ScrollView>-->
+</ContentPage>

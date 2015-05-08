@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CustomerApp.StartPage">
+  <Grid>
+    <!--<Image Source="startPage.jpg" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>-->
+    <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Orientation="Vertical" WidthRequest="150">
+      <Button BackgroundColor="Red" Text="Register" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Clicked="btnReg_Clicked" TextColor="White"></Button>
+      <Button BackgroundColor="Green" Text="Login" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Clicked="btnLogin_Clicked" TextColor="White"></Button>
+    </StackLayout>
+  </Grid>
+</ContentPage>
