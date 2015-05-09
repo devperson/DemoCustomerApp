@@ -1,5 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="com.customer.app" android:versionCode="1" android:versionName="1.0">
 	<uses-sdk android:minSdkVersion="15" />
-	<application></application>
+	<application android:label="Customer app" android:icon="@drawable/icon">
+		<!--
+		For the MAP to work, you *must* create your own API key. See instructions here:
+			http://developer.xamarin.com/guides/cross-platform/xamarin-forms/working-with/maps/
+		which will require you to visit the Google Developer Console here:
+			https://console.developers.google.com/
+		note the package name (listed above) is com.xamarin.mobilecrm - this value must be appended to the generated SHA1 hash that you enter into the console
+		-->
+		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyCw0Qmhg-Yit7GBc04xWytMxaqAwag3LNY" />
+		<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+	</application>
+	<uses-feature android:glEsVersion="0x00020000" android:required="true"></uses-feature>
+	<!-- Google Maps for Android v2 will cache map tiles on external storage -->
 </manifest>
