@@ -14,8 +14,8 @@ namespace CustomerApp
         {
             InitializeComponent();
 
-            App.User = new User();
-            this.BindingContext = App.User;
+            App.Locator.MainViewModel.User = new User();
+            this.BindingContext = App.Locator.MainViewModel.User;
         }
 
         private void Submit_Clicked(object sender, EventArgs e)

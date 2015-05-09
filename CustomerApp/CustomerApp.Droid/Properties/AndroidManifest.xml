@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="com.customer.app" android:versionCode="1" android:versionName="1.0">
 	<uses-sdk android:minSdkVersion="15" />
 	<application android:label="Customer app" android:icon="@drawable/icon">
@@ -14,4 +15,9 @@
 	</application>
 	<uses-feature android:glEsVersion="0x00020000" android:required="true"></uses-feature>
 	<!-- Google Maps for Android v2 will cache map tiles on external storage -->
+=======
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+	<uses-sdk android:minSdkVersion="18" />
+	<application></application>
+>>>>>>> 7c9a638edc35bef0f375700279a005393b89d8d1
 </manifest>

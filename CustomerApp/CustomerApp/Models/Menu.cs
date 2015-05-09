@@ -39,47 +39,18 @@ namespace CustomerApp.Models
         }
 
 
-        #region Commands
-        #region AddToCardCommand
-        private Command _addToCardCommand;
-        public Command AddToCardCommand
+        #region Commands       
+
+        #region InfoClickedCommand
+        private Command _infoClickedCommand;
+        public Command InfoClickedCommand
         {
-            get { return _addToCardCommand ?? (_addToCardCommand = new Command(OnAddToCardCommand)); }
+            get { return _infoClickedCommand ?? (_infoClickedCommand = new Command(OnInfoClickedCommand)); }
         }
 
-        private void OnAddToCardCommand()
-        {            
-            if(this.Quantity>0)
-            {
-                this.OverlayVisible = !this.OverlayVisible;
-            }
-        }
-        #endregion
-
-
-        #region MenuClickedCommand
-        private Command _menuClickedCommand;
-        public Command MenuClickedCommand
+        private void OnInfoClickedCommand()
         {
-            get { return _menuClickedCommand ?? (_menuClickedCommand = new Command(OnMenuClickedCommand)); }
-        }
-
-        private void OnMenuClickedCommand()
-        {
-            this.OverlayVisible = true;
-        }
-        #endregion
-
-        #region CloseOverlayCommand
-        private Command _closeOverlayCommand;
-        public Command CloseOverlayCommand
-        {
-            get { return _closeOverlayCommand ?? (_closeOverlayCommand = new Command(OnCloseOverlayCommand)); }
-        }
-
-        private void OnCloseOverlayCommand()
-        {
-            this.OverlayVisible = false;
+            this.OverlayVisible = !this.OverlayVisible;
         }
         #endregion
 
@@ -93,9 +64,11 @@ namespace CustomerApp.Models
         private void OnAddCommand()
         {
             this.Quantity++;
+
+            if (App.Locator.MainViewModel.Orders.All(o => o != this))
+                App.Locator.MainViewModel.Orders.Add(this);
         }
         #endregion
-
 
         #region RemoveCommand
         private Command _removeCommand;
@@ -107,6 +80,9 @@ namespace CustomerApp.Models
         private void OnRemoveCommand()
         {
             this.Quantity--;
+
+            if (this.Quantity == 0)
+                App.Locator.MainViewModel.Orders.Remove(this);
         }
         #endregion
         #endregion

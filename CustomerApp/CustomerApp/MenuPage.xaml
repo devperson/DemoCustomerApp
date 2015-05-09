@@ -1,68 +1,71 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:con="clr-namespace:CustomerApp.BindingConverters;assembly=CustomerApp"
              x:Class="CustomerApp.MenuPage">
-  <ListView x:Name="listView"  VerticalOptions="Fill" HorizontalOptions="Fill" RowHeight="350">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <con:CheckOutColorConverter x:Key="CheckOutColorConverter"/>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition></RowDefinition>
+      <RowDefinition Height="Auto"></RowDefinition>
+    </Grid.RowDefinitions>
+  <ListView x:Name="listView" ItemsSource="{Binding Menu}"  VerticalOptions="Fill" HorizontalOptions="Fill" RowHeight="350">
     <ListView.ItemTemplate>
       <DataTemplate>
         <ViewCell>
           <ViewCell.View>
-            <Grid  Padding="5" VerticalOptions="Fill" HorizontalOptions="Fill" RowSpacing="0" BackgroundColor="White">
+            <Grid  Padding="0" VerticalOptions="Fill" HorizontalOptions="Fill" RowSpacing="0" BackgroundColor="White">
               <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="Auto"/>
               </Grid.RowDefinitions>
 
               <Image Source="{Binding Image}" VerticalOptions="Fill" HorizontalOptions="Fill" Aspect="Fill"/>
-              <Button VerticalOptions="Fill" HorizontalOptions="Fill" Opacity="0.1" Command="{Binding MenuClickedCommand}">
-              </Button>
 
-              <StackLayout Orientation="Horizontal" Spacing="20" Padding="20" BackgroundColor="Black" Opacity="0.7" VerticalOptions="End" HorizontalOptions="Fill">
+              <Grid  Padding="10" BackgroundColor="Black" Opacity="0.7" VerticalOptions="End" HorizontalOptions="Fill">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition></ColumnDefinition>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Text="{Binding Name}" TextColor="White"/>
+                <Label Text="{Binding Price, StringFormat='{0:C}'}"  TextColor="White" Grid.Column="1" VerticalOptions="Center"/>
+              </Grid>
+              <!--<StackLayout Orientation="Horizontal" Spacing="10" Padding="10" BackgroundColor="Black" Opacity="0.7" VerticalOptions="End" HorizontalOptions="Fill">
                 <Label Text="{Binding Name}" TextColor="White"/>
                 <Label Text="{Binding Price, StringFormat='{0:C}'}"  TextColor="White"/>
-              </StackLayout>
-              <!--<ContentView Padding="20" BackgroundColor="Black" Opacity="0.7" VerticalOptions="End" HorizontalOptions="Fill">
-                <StackLayout Orientation="Horizontal" Spacing="20" HorizontalOptions="Start">
-                  <Label Text="{Binding Name}" TextColor="White"/>
-                  <Label Text="{Binding Price}" TextColor="White"/>
-                </StackLayout>
-              </ContentView>-->
-
+              </StackLayout>-->
+            
               <StackLayout HorizontalOptions="Center" Orientation="Horizontal" Spacing="10" Grid.Row="1" BackgroundColor="White" Padding="5">
                 <Button Command="{Binding RemoveCommand}" Text="-" WidthRequest="40" BorderColor="Gray" BorderRadius="5"></Button>
-                <Label Text="{Binding Quantity}" TextColor="Black" VerticalOptions="Center"></Label>
+                <Label Text="{Binding Quantity}" TextColor="Black" VerticalOptions="Center" FontSize="30"></Label>
                 <Button Command="{Binding AddCommand}" Text="+" WidthRequest="40"></Button>
               </StackLayout>
-
-
-
-              <BoxView BackgroundColor="Black" Opacity="0.7" VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding OverlayVisible}" Grid.RowSpan="2"/>
-
-              <Button VerticalOptions="Start" HorizontalOptions="End" Command="{Binding CloseOverlayCommand}" Text="X" IsVisible="{Binding OverlayVisible}" TextColor="White">
+              
+              <Button Grid.Row="1" VerticalOptions="Center" HorizontalOptions="End" Text="i" Command="{Binding InfoClickedCommand}">
               </Button>
 
-              <StackLayout Orientation="Vertical" Spacing="20" VerticalOptions="Center" HorizontalOptions="Fill" Padding="10" IsVisible="{Binding OverlayVisible}" Grid.RowSpan="2">
-                <Label Text="{Binding Description}" HorizontalOptions="Center" TextColor="White"/>
-                <Button Text="Add to Card" Command="{Binding AddToCardCommand}" BackgroundColor="Red" TextColor="White"/>
-              </StackLayout>
 
+              <BoxView BackgroundColor="Black" Opacity="0.7" VerticalOptions="Fill" HorizontalOptions="Fill" IsVisible="{Binding OverlayVisible}" />
+              <ContentView Padding="10" HorizontalOptions="Fill" VerticalOptions="Fill" IsVisible="{Binding OverlayVisible}">
+                <Label Text="{Binding Description}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="17" />
+              </ContentView>
 
-              <!--<Grid IsVisible="{Binding OverlayVisible}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Grid.RowSpan="2" >
-
-                <BoxView BackgroundColor="Black" Opacity="0.7" VerticalOptions="Fill" HorizontalOptions="Fill" />
-
-                <Button VerticalOptions="Start" HorizontalOptions="End" Command="{Binding CloseOverlayCommand}" Text="X">
-                </Button>
-
-                <StackLayout Orientation="Vertical" Spacing="20" VerticalOptions="Center" HorizontalOptions="Fill" Padding="10">
-                  <Label Text="{Binding Description}" HorizontalOptions="Center" />
-                  <Button Text="Add to Card" Command="{Binding AddToCardCommand}" BackgroundColor="Red" TextColor="White"/>
-                </StackLayout>
-              </Grid>-->
             </Grid>
           </ViewCell.View>
         </ViewCell>
       </DataTemplate>
     </ListView.ItemTemplate>
   </ListView>
+
+    <ContentView x:Name="checkOutContent" BackgroundColor="{Binding IsCheckOutEnabled, Converter={StaticResource CheckOutColorConverter}}" Grid.Row="1" VerticalOptions="End" HorizontalOptions="Fill" Padding="10" >
+      <Label Text="CheckOut" FontSize="25" TextColor="White" VerticalOptions="Fill" HorizontalOptions="Center"></Label>
+    </ContentView>
+    
+  </Grid>
 </ContentPage>

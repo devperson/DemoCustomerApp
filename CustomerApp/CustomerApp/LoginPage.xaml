@@ -2,27 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CustomerApp.LoginPage">
-  <Grid VerticalOptions="Center" HorizontalOptions="Fill" Padding="10">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
-      <ColumnDefinition Width="*"/>
-    </Grid.ColumnDefinitions>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"></RowDefinition>
-      <RowDefinition Height="Auto"></RowDefinition>
-      <RowDefinition Height="Auto"></RowDefinition>
-    </Grid.RowDefinitions>
+  <StackLayout VerticalOptions="Center" Padding="20" Spacing="20">        
+    <Entry Text="{Binding User.UserName}" Placeholder="User name"/>
+    <Entry  Text="{Binding User.Password}" Placeholder="Password"/>
 
-    <Label Text="User name:"></Label>
-    <Entry Grid.Column="1" Text="{Binding User.UserName}"/>
-
-    <Label Grid.Row="1" Text="Password:"></Label>
-    <Entry Grid.Column="1" Grid.Row="1" Text="{Binding User.Password}" />
-
-
-    <ContentView Padding="20" Grid.Row="2" Grid.ColumnSpan="2">
-      <Button Text="Submit" Clicked="Submit_Clicked"></Button>
-    </ContentView>
-
-  </Grid>
+    <Button Text="Submit" Clicked="Submit_Clicked" BackgroundColor="Green"></Button>
+  </StackLayout>
 </ContentPage>

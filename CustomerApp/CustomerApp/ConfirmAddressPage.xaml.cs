@@ -79,7 +79,7 @@ namespace CustomerApp
             var result = await this.DisplayAlert("Delivery Address", userAddress.AddressText, "Confirm", "Cancel");
             if (result)
             {
-                App.User.UserAddress = userAddress;
+                App.Locator.MainViewModel.User.UserAddress = userAddress;
                 App.Current.MainPage = new NavigationPage(new MainPage());
             }
         }

@@ -13,6 +13,8 @@ namespace CustomerApp
         public SideBarList()
         {
             InitializeComponent();
+
+            listView.ItemsSource = new List<string> { "Open Orders", "My Account", "Logout" };
         }
     }
 }
