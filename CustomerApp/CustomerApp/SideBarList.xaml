@@ -4,6 +4,8 @@
              x:Class="CustomerApp.SideBarList"
              Title="Side List">
   <ContentView Padding="20" VerticalOptions="Fill" HorizontalOptions="Fill">
-    <ListView x:Name="listView"  VerticalOptions="Fill" HorizontalOptions="Fill"/>
+    <ListView x:Name="listView"  VerticalOptions="Fill" HorizontalOptions="Fill">
+      
+    </ListView>
   </ContentView>
 </ContentPage>

@@ -1,4 +1,5 @@
 ﻿using CustomerApp.Models;
+using CustomerApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace CustomerApp
 {
     public class App : Application
     {
-        public static User User { get; set; }
+        public static ViewModelLocator Locator { get; set; }        
         public App()
         {
+            Locator = new ViewModelLocator();
             // The root page of your application
             MainPage = new NavigationPage(new StartPage());
         }

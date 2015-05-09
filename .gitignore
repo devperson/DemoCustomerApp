@@ -6,3 +6,9 @@
 /CustomerApp/CustomerApp.Droid/obj
 /CustomerApp/CustomerApp.Droid/bin
 /CustomerApp/CustomerApp.Droid/.DS_Store
+/CustomerApp/CustomerApp/bin
+/CustomerApp/CustomerApp/obj
+/CustomerApp/CustomerApp.Droid/CustomerApp.Droid.csproj.user
+/CustomerApp/CustomerApp.iOS/bin
+/CustomerApp/CustomerApp.iOS/obj
+/CustomerApp/CustomerApp.iOS/Resources/Thumbs.db
