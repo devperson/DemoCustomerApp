@@ -21,9 +21,9 @@
     </JavaMaximumHeapSize>
     <JavaOptions />
     <NuGetPackageImportStamp>c3174fff</NuGetPackageImportStamp>
-    <TargetFrameworkVersion>
-    </TargetFrameworkVersion>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <AndroidUseLatestPlatformSdk>
+    </AndroidUseLatestPlatformSdk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

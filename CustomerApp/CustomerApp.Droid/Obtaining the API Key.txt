@@ -1,8 +1,7 @@
 1)Run cmd
 2)enter cd C:\Program Files (x86)\Java\jre6\bin
 
-3)keytool -list -v -keystore "C:\Users\userrr\AppData\Local\Xamarin\Mono for Android\debug.keystore" -alias androiddebugkey -
-storepass android -keypass android
+3)keytool -list -v -keystore "C:\Users\userrr\AppData\Local\Xamarin\Mono for Android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
 Before run above command, please change location to your debug keystore("C:\Users\userrr\AppData\Local\Xamarin\Mono for Android\debug.keystore")
 
 4)Copy SHA1 fingerprint(something like 90:DC:1A:44:CC:17:85:2A:A5:09:3B:A5:4F:C5:22:49:B7:9E:00:FB)
