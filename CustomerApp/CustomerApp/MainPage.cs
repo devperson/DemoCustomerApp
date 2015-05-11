@@ -12,8 +12,19 @@ namespace CustomerApp
         
         public MainPage()
         {
-            this.Master = new SideBarList();
+            var sideList = new SideBarList();
+            this.Master = sideList;
             this.Detail = new MenuPage();
+
+            sideList.SideItemSelected += (s, e) =>
+            {
+                if (e == "Meals" && !(this.Detail is MenuPage))
+                    this.Detail = new MenuPage();
+                if (e == "Orders" && !(this.Detail is OrdersPage))
+                    this.Detail = new OrdersPage();
+
+                this.IsPresented = false;
+            };
         }
     }
 }

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CustomerApp.OrdersPage">
+  <ListView x:Name="listView" ItemsSource="{Binding Orders}" VerticalOptions="Fill" HorizontalOptions="Fill">
+    <ListView.ItemTemplate>
+      <DataTemplate>
+        <ViewCell>
+          <ViewCell.View>
+            <StackLayout Orientation="Horizontal" BackgroundColor="White" HorizontalOptions="Fill" VerticalOptions="Fill">
+              <Label Text="{Binding Date}" VerticalOptions="Center" TextColor="Black"/>
+              <Label Text=" --- " VerticalOptions="Center" TextColor="Black"/>
+              <Label Text="{Binding Meals[0].Name}" VerticalOptions="Center" TextColor="Black" />
+              <Label Text="{Binding Status}, StringFormat='Status-{0}'}"></Label>
+            </StackLayout>
+          </ViewCell.View>
+        </ViewCell>
+      </DataTemplate>
+    </ListView.ItemTemplate>
+  </ListView>
+</ContentPage>

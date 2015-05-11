@@ -1,10 +1,13 @@
 ﻿using CustomerApp.Models;
+using Geolocator.Plugin;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 
 namespace CustomerApp.ViewModels
 {
@@ -25,14 +28,32 @@ namespace CustomerApp.ViewModels
         }
 
         public User User { get; set; }
-        public ObservableCollection<Menu> Orders { get; set; }
+        //public ObservableCollection<Menu> Orders { get; set; }
+        public Order ViewOrder { get; set; }
+
+        Order _currentOrder;
+        public Order CurrentOrder 
+        {
+            get { return _currentOrder; }
+            set
+            {
+                if (_currentOrder != null)
+                    _currentOrder.Meals.CollectionChanged -= Meals_CollectionChanged;
+                _currentOrder = value;
+                _currentOrder.Meals.CollectionChanged += Meals_CollectionChanged;                
+            }
+        }
+        public ObservableCollection<Order> Orders { get; set; }        
         public ObservableCollection<Menu> Menu { get; set; }
         
         public MainViewModel()
         {
-            this.Orders = new ObservableCollection<Menu>();
-            this.Orders.CollectionChanged += Orders_CollectionChanged;
+            //this.Orders = new ObservableCollection<Menu>();
+            //this.Orders.CollectionChanged += Orders_CollectionChanged;
             this.Menu = new ObservableCollection<Menu>();
+            this.Orders = new ObservableCollection<Order>();
+            this.CurrentOrder = new Order();
+            this.CurrentOrder.Meals.CollectionChanged += Meals_CollectionChanged;
 
             Menu menu1 = new Menu();
             menu1.Name = "CHICKEN AND CHEESE ENCHILADAS";
@@ -57,11 +78,59 @@ namespace CustomerApp.ViewModels
             menu3.Image = "img3.jpg";//"http://localhost:1732/Images/Products/img3.jpg";
             menu3.AvailableDate = DateTime.Now;
             this.Menu.Add(menu3);
+
+            Device.StartTimer(TimeSpan.FromSeconds(3), () => {
+
+                this.GetPosition();
+                return false;
+            });            
         }
 
-        private void Orders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Meals_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            this.IsCheckOutEnabled = this.Orders.Count > 0;
+            this.IsCheckOutEnabled = this.CurrentOrder.Meals.Count > 0;
+        }
+
+        public async void GetPosition()
+        {
+            var locator = CrossGeolocator.Current;
+            locator.DesiredAccuracy = 20;
+            var page = new Xamarin.Forms.ContentPage();
+            if (locator.IsGeolocationAvailable)
+            {
+                page.DisplayAlert("Error", "User geo location not available.", "OK");
+                return;
+            }
+
+            if (locator.IsGeolocationEnabled)
+            {
+                page.DisplayAlert("Error", "User geo location disabled. Please enable geo location in device settings.", "OK");
+                return;
+            }
+
+            try
+            {
+                var geoLocation = await locator.GetPositionAsync();
+
+                var posision = new Position(geoLocation.Latitude, geoLocation.Longitude);
+
+                this.User.UserAddress.Position = posision;
+            }
+            catch (Exception ex)
+            {
+                page.DisplayAlert("Error", "Error on getting current user location: " + ex.Message, "OK");
+            }
+        }
+
+
+        public void ClearMenuSelections()
+        {            
+            foreach (var item in this.Menu)
+            {
+                item.Quantity = 0;
+            }
+
+            this.IsCheckOutEnabled = false;
         }
     }
 }

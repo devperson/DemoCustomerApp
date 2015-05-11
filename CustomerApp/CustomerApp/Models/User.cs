@@ -9,6 +9,10 @@ namespace CustomerApp.Models
 {
     public class User
     {
+        public User()
+        {
+            this.UserAddress = new Address();
+        }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Phone { get; set; }

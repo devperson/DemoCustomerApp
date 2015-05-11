@@ -65,8 +65,8 @@ namespace CustomerApp.Models
         {
             this.Quantity++;
 
-            if (App.Locator.MainViewModel.Orders.All(o => o != this))
-                App.Locator.MainViewModel.Orders.Add(this);
+            if (App.Locator.MainViewModel.CurrentOrder.Meals.All(o => o != this) && this.Quantity > 0)
+                App.Locator.MainViewModel.CurrentOrder.Meals.Add(this);
         }
         #endregion
 
@@ -79,10 +79,11 @@ namespace CustomerApp.Models
 
         private void OnRemoveCommand()
         {
-            this.Quantity--;
+            if (this.Quantity > 0)
+                this.Quantity--;
 
             if (this.Quantity == 0)
-                App.Locator.MainViewModel.Orders.Remove(this);
+                App.Locator.MainViewModel.CurrentOrder.Meals.Remove(this);            
         }
         #endregion
         #endregion

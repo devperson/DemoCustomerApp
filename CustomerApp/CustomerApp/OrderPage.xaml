@@ -1,23 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CustomerApp.CheckOutPage">
+             xmlns:controls="clr-namespace:CustomerApp.Controls;assembly=CustomerApp"
+             x:Class="CustomerApp.OrderPage">
+
+
   <ScrollView VerticalOptions="Fill" HorizontalOptions="Fill" BackgroundColor="White">
     <StackLayout Orientation="Vertical" Padding="10" Spacing="10">
 
       <Label Text="ORDER DETAILS" FontSize="18"></Label>
-      
-      <Grid x:Name="orderList">      
+
+      <Grid x:Name="orderList">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto"></ColumnDefinition>
           <ColumnDefinition Width="Auto"></ColumnDefinition>
           <ColumnDefinition ></ColumnDefinition>
           <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>       
+        </Grid.ColumnDefinitions>
       </Grid>
 
       <BoxView HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="FillAndExpand"></BoxView>
-      
+
       <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" >
         <Label Text="subtotal" TextColor="Black" HorizontalOptions="FillAndExpand"></Label>
         <Label x:Name="lblSubTotal" Text="$66" TextColor="Red" HorizontalOptions="End"></Label>
@@ -35,8 +38,7 @@
         <Label x:Name="lblTotal" Text="$50" TextColor="Red" HorizontalOptions="End"></Label>
       </StackLayout>
       <BoxView HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="FillAndExpand"></BoxView>
-      
-      <Button BackgroundColor="Red" Text="Confirm Order" WidthRequest="150" HorizontalOptions="Center" Clicked="confirm_Clicked"></Button>
+
     </StackLayout>
   </ScrollView>
 </ContentPage>

@@ -1,30 +1,30 @@
-﻿using CustomerApp.Models;
+﻿using Geolocator.Plugin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 
 namespace CustomerApp
 {
-    public partial class CheckOutPage : ContentPage
+    public partial class OrderPage : ContentPage
     {
-
-        public CheckOutPage()
+        public OrderPage()
         {
             InitializeComponent();
 
-            var meals = App.Locator.MainViewModel.CurrentOrder.Meals;
+
+            var meals = App.Locator.MainViewModel.ViewOrder.Meals;
             for (int i = 0; i < meals.Count; i++)
-            {
-                var orders = App.Locator.MainViewModel.Orders;
+            {                
                 var lblQuantity = new Label();
                 lblQuantity.VerticalOptions = LayoutOptions.Center;
                 lblQuantity.TextColor = Color.Red;
                 lblQuantity.Text = meals[i].Quantity.ToString();
                 lblQuantity.FontSize = 19;
-                Grid.SetRow(lblQuantity, i);                
+                Grid.SetRow(lblQuantity, i);
                 orderList.Children.Add(lblQuantity);
 
                 var lbl = new Label();
@@ -53,27 +53,12 @@ namespace CustomerApp
                 orderList.Children.Add(lblPrice);
             }
 
-            double tax = 4.3, subTotal = App.Locator.MainViewModel.CurrentOrder.Meals.Sum(o => (o.Quantity * o.Price));
+            double tax = 4.3, subTotal = App.Locator.MainViewModel.ViewOrder.Meals.Sum(o => (o.Quantity * o.Price));
             lblTax.Text = "$" + tax;
             lblSubTotal.Text = "$" + subTotal;
             lblTotal.Text = "$" + (subTotal + tax).ToString();
         }
 
-        public void confirm_Clicked(object sender, EventArgs e)
-        {            
-            App.Locator.MainViewModel.CurrentOrder.Date = DateTime.Now;
-            var order = App.Locator.MainViewModel.CurrentOrder.DeepClone();
-            order.Status = OrderStatus.Open;
-            App.Locator.MainViewModel.ViewOrder = order;
-            App.Locator.MainViewModel.ClearMenuSelections();
-            App.Locator.MainViewModel.CurrentOrder = new Order();
-            App.Locator.MainViewModel.Orders.Add(order);            
-
-            this.Navigation.RemovePage(this);
-            this.Navigation.PushAsync(new ActiveOrderPage());
-        }
-
-        public static CheckOutPage Instance { get; set; }
-
+       
     }
 }
