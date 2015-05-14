@@ -123,7 +123,9 @@ namespace CustomerApp.iOS.Renderers
             {
                 var coord = new CLLocationCoordinate2D(item.Position.Latitude, item.Position.Longitude);
 
+                
                 var point = new MKPointAnnotation { Title = item.Label };
+                
                 point.SetCoordinate(coord);
 
                 mkMapView.AddAnnotation(point);
@@ -145,6 +147,26 @@ namespace CustomerApp.iOS.Renderers
             var renderer = new MKPolylineRenderer(route) { StrokeColor = UIColor.Blue };
 
             return renderer;
+        }
+
+        public override MKAnnotationView GetViewForAnnotation(MKMapView mapView, IMKAnnotation annotation)
+        {
+            string annotationIdentifier = @"annotationIdentifier";
+            var pinView = mapView.DequeueReusableAnnotation(annotationIdentifier);
+            if(pinView == null)
+            {
+                pinView = new MKAnnotationView(annotation, annotationIdentifier);
+
+                var pointAnn = annotation as MKPointAnnotation;
+                if (pointAnn != null)
+                    pinView.Image = UIImage.FromBundle("pin.png");
+            }
+            else
+            {
+                pinView.Annotation = annotation;
+            }
+
+            return pinView;
         }
     }
 }

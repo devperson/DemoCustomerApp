@@ -12,3 +12,5 @@
 /CustomerApp/CustomerApp.iOS/bin
 /CustomerApp/CustomerApp.iOS/obj
 /CustomerApp/CustomerApp.iOS/Resources/Thumbs.db
+/CustomerApp/CustomerApp.iOS/Resources/.DS_Store
+/CustomerApp/CustomerApp.Droid/Resources/drawable/Thumbs.db

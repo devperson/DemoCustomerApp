@@ -22,9 +22,19 @@ namespace CustomerApp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            UINavigationBar.Appearance.BackgroundColor = UIColor.FromRGBA(0, 0, 0, 0);
+            UINavigationBar.Appearance.BarTintColor = UIColor.Red;
+            UINavigationBar.Appearance.TintColor = UIColor.Black;
+            UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
+            {
+                TextColor = UIColor.White
+            });
+
             global::Xamarin.Forms.Forms.Init();
             Xamarin.FormsMaps.Init();
             LoadApplication(new App());
+
+            
 
             return base.FinishedLaunching(app, options);
         }

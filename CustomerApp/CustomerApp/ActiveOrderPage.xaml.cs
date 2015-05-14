@@ -28,20 +28,17 @@ namespace CustomerApp
                 map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
 
                 map.Pins.Clear();
-                map.Pins.Add(new Pin { Label = "My Location", Position = pos });
-                map.Pins.Add(new Pin { Label = "Driver Location", Position = new Position(pos.Latitude + 3, pos.Longitude + 2) });
+                Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                {
+                    map.Pins.Add(new Pin { Label = "My Location", Position = pos });
+                    var posDriver = new Position(41.259655, 69.184834);
+                    map.Pins.Add(new Pin { Label = "Driver Location", Position = posDriver });
+
+                    return false;
+                });
             }
 
-            this.UpdateDriverLocation();
-
-            //Device.StartTimer(TimeSpan.FromSeconds(1), () =>
-            //{
-            //    this.Navigation.RemovePage(CheckOutPage.Instance);
-            //    CheckOutPage.Instance = null;
-            //    return false;
-            //});
-
-
+            this.UpdateDriverLocation();           
         }
 
         bool keepTimer = true;

@@ -115,6 +115,7 @@ namespace CustomerApp.Droid.Renderers
             androidMapView.Map.Clear();
 
             androidMapView.Map.MyLocationEnabled = formsMap.IsShowingUser;
+            androidMapView.Map.MarkerClick += HandleMarkerClick;
 
 
             var items = formsMap.Pins;
@@ -125,10 +126,24 @@ namespace CustomerApp.Droid.Renderers
                 markerWithIcon.SetPosition(new LatLng(item.Position.Latitude, item.Position.Longitude));
                 markerWithIcon.SetTitle(string.IsNullOrWhiteSpace(item.Label) ? "-" : item.Label);
 
-                markerWithIcon.Draggable(true);
+                try
+                {
+                    markerWithIcon.InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.pin));
+                }
+                catch (Exception)
+                {
+                    markerWithIcon.InvokeIcon(BitmapDescriptorFactory.DefaultMarker());
+                }
+
+                //markerWithIcon.Draggable(true);
 
                 androidMapView.Map.AddMarker(markerWithIcon);
             }
+        }
+
+        private void HandleMarkerClick(object sender, GoogleMap.MarkerClickEventArgs e)
+        {
+            
         }
 
     }

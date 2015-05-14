@@ -10,21 +10,37 @@ namespace CustomerApp
     public class MainPage : MasterDetailPage
     {
         
+        
         public MainPage()
         {
+            this.Title = "Meals";
             var sideList = new SideBarList();
-            this.Master = sideList;
-            this.Detail = new MenuPage();
-
             sideList.SideItemSelected += (s, e) =>
             {
                 if (e == "Meals" && !(this.Detail is MenuPage))
-                    this.Detail = new MenuPage();
+                {
+                    this.Detail = new NavigationPage(new MenuPage());
+                    this.Title = "Meals";
+                }
                 if (e == "Orders" && !(this.Detail is OrdersPage))
-                    this.Detail = new OrdersPage();
+                {
+                    this.Detail = new NavigationPage(new OrdersPage());
+                    this.Title = "Orders";
+                }
+                if (e == "My Account" && !(this.Detail is MyAccountPage))
+                {
+                    this.Detail = new NavigationPage(new MyAccountPage());
+                    this.Title = "My Account";
+                }
+                if (e == "Logout")
+                    App.Current.MainPage = new NavigationPage(new StartPage());
 
                 this.IsPresented = false;
             };
+            sideList.Icon = "settings.png";
+
+            this.Master = sideList;
+            this.Detail = new NavigationPage(new MenuPage());	
         }
     }
 }

@@ -17,13 +17,24 @@ namespace CustomerApp
         {
             InitializeComponent();
 
+            map.IsShowingUser = true;
+            map.Tap += map_Tap;
 
-            map.Tap += map_Tap;            
-            this.GetPosition();            
+            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+            {
+                this.GetPosition();
+
+                return false;
+            });
         }
 
+        bool gotPosision = false;
         private async void GetPosition()
         {
+            if (gotPosision)
+                return;
+
+            gotPosision = true;
             var locator = CrossGeolocator.Current;
             locator.PositionError += locator_PositionError;
             locator.DesiredAccuracy = 20;
@@ -31,12 +42,29 @@ namespace CustomerApp
             {
                 var geoLocation = await locator.GetPositionAsync();
 
-                var posision = new Position(geoLocation.Latitude, geoLocation.Longitude);
-                map.MoveToRegion(MapSpan.FromCenterAndRadius(posision, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
+                var pos = new Position(geoLocation.Latitude, geoLocation.Longitude);
+                map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
 
-                this.ConfirmLocation(posision);
+
+                var geo = new Geocoder();
+                var addresses = await geo.GetAddressesForPositionAsync(pos);
+                var addr = addresses.First();
+
+                var userAddress = new Address();
+                userAddress.AddressText = addr;
+                userAddress.Position = pos;
+
+                map.Pins.Clear();
+                map.Pins.Add(new Pin { Label = "Current Location", Address = userAddress.AddressText, Position = pos });
+
+                var result = await this.DisplayAlert("Delivery Address", userAddress.AddressText, "Confirm", "Cancel");
+                if (result)
+                {
+                    App.Locator.MainViewModel.User.UserAddress = userAddress;
+                    App.Current.MainPage = new MainPage();
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.DisplayAlert("Error", "Error on getting current user location: " + ex.Message, "OK");
             }
@@ -74,13 +102,13 @@ namespace CustomerApp
             userAddress.Position = pos;
 
             map.Pins.Clear();
-            map.Pins.Add(new Pin { Label = userAddress.AddressText, Position = pos });
+            map.Pins.Add(new Pin { Label = userAddress.AddressText, Address = userAddress.AddressText, Position = pos });
 
             var result = await this.DisplayAlert("Delivery Address", userAddress.AddressText, "Confirm", "Cancel");
             if (result)
             {
                 App.Locator.MainViewModel.User.UserAddress = userAddress;
-                App.Current.MainPage = new NavigationPage(new MainPage());
+                App.Current.MainPage = new MainPage();
             }
         }
     }
