@@ -13,8 +13,7 @@ namespace CustomerApp
         public LoginPage()
         {
             InitializeComponent();
-
-            App.Locator.MainViewModel.User = new User();
+            
             this.BindingContext = App.Locator.MainViewModel.User;
         }
 

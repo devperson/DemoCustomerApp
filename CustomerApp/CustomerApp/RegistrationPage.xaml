@@ -6,15 +6,15 @@
 
   <ScrollView>
     <StackLayout VerticalOptions="Center" Padding="20" Spacing="20">    
-      <Entry Text="{Binding User.FirstName}" Placeholder="First Name"/>
+      <Entry Text="{Binding FirstName}" Placeholder="First Name"/>
 
-      <Entry Text="{Binding User.LastName}" Placeholder="Last Name"/>
+      <Entry Text="{Binding LastName}" Placeholder="Last Name"/>
 
-      <Entry Text="{Binding User.Phone}" Keyboard="Numeric" Placeholder="Phone"/>
+      <Entry Text="{Binding Phone}" Keyboard="Numeric" Placeholder="Phone"/>
 
-      <Entry Text="{Binding User.UserName}" Placeholder="User name"/>
+      <Entry Text="{Binding UserName}" Placeholder="User name"/>
 
-      <Entry Text="{Binding User.Password}" Placeholder="Password"/>
+      <Entry Text="{Binding Password}" Placeholder="Password"/>
 
       <Button Text="Submit" Clicked="Submit_Clicked" BackgroundColor="Green"></Button>
 

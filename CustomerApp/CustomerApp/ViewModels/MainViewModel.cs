@@ -48,8 +48,7 @@ namespace CustomerApp.ViewModels
         
         public MainViewModel()
         {
-            //this.Orders = new ObservableCollection<Menu>();
-            //this.Orders.CollectionChanged += Orders_CollectionChanged;
+            this.User = new User();
             this.Menu = new ObservableCollection<Menu>();
             this.Orders = new ObservableCollection<Order>();
             this.CurrentOrder = new Order();
@@ -78,50 +77,12 @@ namespace CustomerApp.ViewModels
             menu3.Image = "img3.jpg";//"http://localhost:1732/Images/Products/img3.jpg";
             menu3.AvailableDate = DateTime.Now;
             this.Menu.Add(menu3);
-
-            Device.StartTimer(TimeSpan.FromSeconds(3), () => {
-
-                this.GetPosition();
-                return false;
-            });            
         }
 
         private void Meals_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             this.IsCheckOutEnabled = this.CurrentOrder.Meals.Count > 0;
         }
-
-        public async void GetPosition()
-        {
-            var locator = CrossGeolocator.Current;
-            locator.DesiredAccuracy = 20;
-            var page = new Xamarin.Forms.ContentPage();
-            if (locator.IsGeolocationAvailable)
-            {
-                page.DisplayAlert("Error", "User geo location not available.", "OK");
-                return;
-            }
-
-            if (locator.IsGeolocationEnabled)
-            {
-                page.DisplayAlert("Error", "User geo location disabled. Please enable geo location in device settings.", "OK");
-                return;
-            }
-
-            try
-            {
-                var geoLocation = await locator.GetPositionAsync();
-
-                var posision = new Position(geoLocation.Latitude, geoLocation.Longitude);
-
-                this.User.UserAddress.Position = posision;
-            }
-            catch (Exception ex)
-            {
-                page.DisplayAlert("Error", "Error on getting current user location: " + ex.Message, "OK");
-            }
-        }
-
 
         public void ClearMenuSelections()
         {            

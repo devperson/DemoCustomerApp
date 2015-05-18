@@ -20,60 +20,32 @@ namespace CustomerApp
             map.IsShowingUser = true;
             map.Tap += map_Tap;
 
+
+            var pos = App.Locator.MainViewModel.User.UserAddress.Position;
+            var address = App.Locator.MainViewModel.User.UserAddress.AddressText;
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
+            map.Pins.Clear();
+            map.Pins.Add(new Pin { Label = address, Address = address, Position = pos });
+
             Device.StartTimer(TimeSpan.FromSeconds(1), () =>
             {
-                this.GetPosition();
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    this.DisplayAlert(address);                    
+                });                
 
                 return false;
             });
         }
 
-        bool gotPosision = false;
-        private async void GetPosition()
+        private async void DisplayAlert(string address)
         {
-            if (gotPosision)
-                return;
-
-            gotPosision = true;
-            var locator = CrossGeolocator.Current;
-            locator.PositionError += locator_PositionError;
-            locator.DesiredAccuracy = 20;
-            try
-            {
-                var geoLocation = await locator.GetPositionAsync();
-
-                var pos = new Position(geoLocation.Latitude, geoLocation.Longitude);
-                map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
-
-
-                var geo = new Geocoder();
-                var addresses = await geo.GetAddressesForPositionAsync(pos);
-                var addr = addresses.First();
-
-                var userAddress = new Address();
-                userAddress.AddressText = addr;
-                userAddress.Position = pos;
-
-                map.Pins.Clear();
-                map.Pins.Add(new Pin { Label = "Current Location", Address = userAddress.AddressText, Position = pos });
-
-                var result = await this.DisplayAlert("Delivery Address", userAddress.AddressText, "Confirm", "Cancel");
-                if (result)
-                {
-                    App.Locator.MainViewModel.User.UserAddress = userAddress;
-                    App.Current.MainPage = new MainPage();
-                }
+            var result = await this.DisplayAlert("Delivery Address", address, "Confirm", "Cancel");
+            if (result)
+            {                
+                App.Current.MainPage = new MainPage();
             }
-            catch (Exception ex)
-            {
-                this.DisplayAlert("Error", "Error on getting current user location: " + ex.Message, "OK");
-            }
-        }
-
-        private void locator_PositionError(object sender, Geolocator.Plugin.Abstractions.PositionErrorEventArgs e)
-        {
-            this.DisplayAlert("Error", "Error on getting current user location: " + e.Error, "OK");
-        }
+        }       
 
         public async void SearchAddress_Clicked(object sender, EventArgs e)
         {
@@ -95,16 +67,16 @@ namespace CustomerApp
         {
             var geo = new Geocoder();
             var addresses = await geo.GetAddressesForPositionAsync(pos);
-            var addr = addresses.First();
+            var address = addresses.First();
 
             var userAddress = new Address();
-            userAddress.AddressText = addr;
+            userAddress.AddressText = address;
             userAddress.Position = pos;
 
             map.Pins.Clear();
-            map.Pins.Add(new Pin { Label = userAddress.AddressText, Address = userAddress.AddressText, Position = pos });
+            map.Pins.Add(new Pin { Label = address, Address = address, Position = pos });
 
-            var result = await this.DisplayAlert("Delivery Address", userAddress.AddressText, "Confirm", "Cancel");
+            var result = await this.DisplayAlert("Delivery Address", address, "Confirm", "Cancel");
             if (result)
             {
                 App.Locator.MainViewModel.User.UserAddress = userAddress;

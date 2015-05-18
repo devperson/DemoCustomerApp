@@ -4,8 +4,8 @@
              Title="Login"
              x:Class="CustomerApp.LoginPage">
   <StackLayout VerticalOptions="Center" Padding="20" Spacing="20">        
-    <Entry Text="{Binding User.UserName}" Placeholder="User name"/>
-    <Entry  Text="{Binding User.Password}" Placeholder="Password"/>
+    <Entry Text="{Binding UserName}" Placeholder="User name"/>
+    <Entry  Text="{Binding Password}" Placeholder="Password"/>
 
     <Button Text="Submit" Clicked="Submit_Clicked" BackgroundColor="Green"></Button>
   </StackLayout>

@@ -13,8 +13,7 @@ namespace CustomerApp
         public RegistrationPage()
         {
             InitializeComponent();
-
-            App.Locator.MainViewModel.User = new User();
+            
             this.BindingContext = App.Locator.MainViewModel.User;
         }
 
