@@ -118,6 +118,7 @@
     <AndroidResource Include="Resources\drawable\img2.jpg" />
     <AndroidResource Include="Resources\drawable\pin.png" />
     <AndroidResource Include="Resources\drawable\settings.png" />
+    <AndroidResource Include="Resources\drawable\car.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomerApp\CustomerApp.csproj">
