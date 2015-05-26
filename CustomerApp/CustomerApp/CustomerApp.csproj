@@ -50,6 +50,7 @@
     <Compile Include="Controls\Models\Routes.cs" />
     <Compile Include="Controls\ObservableRangeCollection.cs" />
     <Compile Include="Controls\TapEventArgs.cs" />
+    <Compile Include="Models\Http\IWebServiceClient.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -58,6 +59,7 @@
       <DependentUpon>MenuPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\BindingConverters\CheckOutColorConverter.cs" />
+    <Compile Include="Models\Http\Response.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\ObservableObject.cs" />
     <Compile Include="Models\Order.cs" />

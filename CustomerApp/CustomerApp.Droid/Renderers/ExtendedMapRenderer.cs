@@ -128,7 +128,12 @@ namespace CustomerApp.Droid.Renderers
 
                 try
                 {
-                    markerWithIcon.InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.pin));
+                    if (item.Label == "Driver Location")
+                        markerWithIcon.InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.car));
+                    else
+                        markerWithIcon.InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.pin));
+
+                    //markerWithIcon.InvokeIcon(BitmapDescriptorFactory.FromResource(Resource.Drawable.pin));
                 }
                 catch (Exception)
                 {

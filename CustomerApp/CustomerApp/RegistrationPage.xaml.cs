@@ -19,14 +19,28 @@ namespace CustomerApp
 
         private void Submit_Clicked(object sender, EventArgs e)
         {
-            try
+            errorMsg.IsVisible = false;
+            var user = App.Locator.MainViewModel.User;
+            if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password))
             {
-                this.Navigation.PushAsync(new ConfirmAddressPage());
+                errorMsg.IsVisible = true;
+                lblErr.Text = "Fill all fields.";
+                return;
             }
-            catch (Exception ex)
+
+            App.Locator.MainViewModel.WebService.RegisterUser(this.BindingContext as User, (res) =>
             {
-                this.DisplayAlert("Error", ex.Message, "OK");
-            }
+                if (res.Success)
+                {
+                    App.Locator.MainViewModel.User.Id = res.UserId;
+                    this.Navigation.PushAsync(new ConfirmAddressPage());
+                }
+                else
+                {
+                    errorMsg.IsVisible = true;
+                    lblErr.Text = res.Error;
+                }
+            });
         }
     }
 }

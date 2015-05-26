@@ -23,6 +23,8 @@ namespace CustomerApp
         private void Init()
         {
             var pos = App.Locator.MainViewModel.User.UserAddress.Position;
+            var driverPos = App.Locator.MainViewModel.ViewOrder.Driver.Position;
+
             if (pos != null && pos.Longitude != 0)
             {
                 map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
@@ -30,9 +32,8 @@ namespace CustomerApp
                 map.Pins.Clear();
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
-                    map.Pins.Add(new Pin { Label = "My Location", Position = pos });
-                    var posDriver = new Position(41.259655, 69.184834);
-                    map.Pins.Add(new Pin { Label = "Driver Location", Position = posDriver });
+                    map.Pins.Add(new Pin { Label = "My Location", Position = pos });                    
+                    map.Pins.Add(new Pin { Label = "Driver Location", Position = driverPos });
 
                     return false;
                 });

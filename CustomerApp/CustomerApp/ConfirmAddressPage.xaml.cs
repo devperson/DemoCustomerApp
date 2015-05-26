@@ -42,8 +42,13 @@ namespace CustomerApp
         {
             var result = await this.DisplayAlert("Delivery Address", address, "Confirm", "Cancel");
             if (result)
-            {                
-                App.Current.MainPage = new MainPage();
+            {
+                var pos = App.Locator.MainViewModel.User.UserAddress.Position;
+                App.Locator.MainViewModel.UpdateUserLocation((res) =>
+                {
+                    if (res.Success)
+                        App.Current.MainPage = new MainPage();                    
+                });                
             }
         }       
 
@@ -80,7 +85,14 @@ namespace CustomerApp
             if (result)
             {
                 App.Locator.MainViewModel.User.UserAddress = userAddress;
-                App.Current.MainPage = new MainPage();
+
+                App.Locator.MainViewModel.UpdateUserLocation((res) =>
+                {
+                    if (res.Success)
+                        App.Current.MainPage = new MainPage();
+                    else
+                        this.DisplayAlert("Error", "Error on saving user address.","Close");
+                });           
             }
         }
     }

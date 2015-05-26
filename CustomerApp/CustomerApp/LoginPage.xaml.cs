@@ -19,14 +19,25 @@ namespace CustomerApp
 
         private void Submit_Clicked(object sender, EventArgs e)
         {
-            try
+            errorMsg.IsVisible = false;
+            var user = App.Locator.MainViewModel.User;
+
+            if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password))
             {
-                App.Current.MainPage = new MainPage();
+                errorMsg.IsVisible = true;
+                return;
             }
-            catch (Exception ex)
+
+            App.Locator.MainViewModel.WebService.Login(new { username = user.UserName, password = user.Password }, (res) =>
             {
-                this.DisplayAlert("Error", ex.Message, "OK");
-            }
+                if (res.Success)
+                {
+                    user.Id = res.UserId;
+                    App.Current.MainPage = new MainPage();
+                }
+                else
+                    errorMsg.IsVisible = true;
+            }); 
         }
     }
 }

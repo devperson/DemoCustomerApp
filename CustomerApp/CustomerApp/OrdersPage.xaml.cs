@@ -19,7 +19,7 @@ namespace CustomerApp
             {
                 var order = listView.SelectedItem as Order;
                 App.Locator.MainViewModel.ViewOrder = order;
-                if (order.Status == OrderStatus.Open)
+                if (!order.IsDelivered)
                     this.Navigation.PushAsync(new ActiveOrderPage());
                 else
                     this.Navigation.PushAsync(new OrderPage());

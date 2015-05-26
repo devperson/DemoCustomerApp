@@ -5,7 +5,12 @@
              x:Class="CustomerApp.RegistrationPage">
 
   <ScrollView>
-    <StackLayout VerticalOptions="Center" Padding="20" Spacing="20">    
+    <StackLayout VerticalOptions="Center" Padding="20" Spacing="20">
+      
+      <ContentView x:Name="errorMsg" Padding="20" IsVisible="False">
+        <Label x:Name="lblErr" Text="" TextColor="Red"></Label>
+      </ContentView>
+      
       <Entry Text="{Binding FirstName}" Placeholder="First Name"/>
 
       <Entry Text="{Binding LastName}" Placeholder="Last Name"/>
@@ -16,7 +21,7 @@
 
       <Entry Text="{Binding Password}" Placeholder="Password"/>
 
-      <Button Text="Submit" Clicked="Submit_Clicked" BackgroundColor="Green"></Button>
+      <Button Text="Submit" Clicked="Submit_Clicked" BackgroundColor="Green" TextColor="White"></Button>
 
     </StackLayout>
   </ScrollView>

@@ -62,15 +62,27 @@ namespace CustomerApp
         public void confirm_Clicked(object sender, EventArgs e)
         {            
             App.Locator.MainViewModel.CurrentOrder.Date = DateTime.Now;
-            var order = App.Locator.MainViewModel.CurrentOrder.DeepClone();
-            order.Status = OrderStatus.Open;
+            var order = App.Locator.MainViewModel.CurrentOrder.DeepClone();            
             App.Locator.MainViewModel.ViewOrder = order;
             App.Locator.MainViewModel.ClearMenuSelections();
             App.Locator.MainViewModel.CurrentOrder = new Order();
             App.Locator.MainViewModel.Orders.Add(order);            
 
-            this.Navigation.RemovePage(this);
-            this.Navigation.PushAsync(new ActiveOrderPage());
+            App.Locator.MainViewModel.SendOrder((res) => {
+
+                if (res.Success)
+                {
+                    order.Id = res.OrderId;
+                    order.Driver.Id = res.DriverId;
+                    order.Driver.Position = res.DriverPosition;
+                    this.Navigation.RemovePage(this);
+                    this.Navigation.PushAsync(new ActiveOrderPage());
+                }
+                else
+                {
+                    this.DisplayAlert("Error", "Error on sending order", "Close");
+                }
+            });
         }
 
         public static CheckOutPage Instance { get; set; }
