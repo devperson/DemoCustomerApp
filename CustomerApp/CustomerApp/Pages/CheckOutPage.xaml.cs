@@ -77,6 +77,8 @@ namespace CustomerApp
                     order.Driver.Position = res.DriverPosition;
                     this.Navigation.RemovePage(this);
                     this.Navigation.PushAsync(new ActiveOrderPage());
+
+                    
                 }
                 else
                 {

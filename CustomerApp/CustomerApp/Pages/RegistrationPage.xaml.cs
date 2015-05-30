@@ -33,6 +33,8 @@ namespace CustomerApp
                 if (res.Success)
                 {
                     App.Locator.MainViewModel.User.Id = res.UserId;
+
+                    App.Locator.MainViewModel.OnUserLogedIn();
                     this.Navigation.PushAsync(new ConfirmAddressPage());
                 }
                 else

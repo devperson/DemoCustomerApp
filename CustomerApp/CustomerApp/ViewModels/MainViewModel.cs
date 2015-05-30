@@ -61,6 +61,19 @@ namespace CustomerApp.ViewModels
                 return _service;
             }
         }
+
+        private IHubClient _ntf;
+        public IHubClient Notifier
+        {
+            get
+            {
+                if (_ntf == null)
+                {
+                    _ntf = DependencyService.Get<IHubClient>();
+                }
+                return _ntf;
+            }
+        }
         
         public MainViewModel()
         {
@@ -97,17 +110,14 @@ namespace CustomerApp.ViewModels
             //menu3.Image = "img3.jpg";//"http://localhost:1732/Images/Products/img3.jpg";
             ////menu3.AvailableDate = DateTime.Now;
             //this.Menu.Add(menu3);
+        }
 
-            Device.StartTimer(TimeSpan.FromSeconds(0.5), () =>
-            {                
-                this.GetData();
-                //Device.BeginInvokeOnMainThread(() =>
-                //{
-                    
-                //});
-
-                return false;
-            });
+        public void OnUserLogedIn()
+        {
+            this.Notifier.Initialize(this.ApiUrl, "Customer" + this.User.Id.ToString());
+            this.Notifier.OnDriverPositionChanged += Notifier_OnDriverPositionChanged;
+            this.Notifier.OnOrderCompleted += Notifier_OnOrderCompleted;
+            this.GetData();
         }
 
         private void GetData()
@@ -133,6 +143,23 @@ namespace CustomerApp.ViewModels
             });
         }
 
+        private void Notifier_OnDriverPositionChanged(object sender, DriverEventArgs e)
+        {
+            var orders = this.Orders.Where(o => o.Driver.Id == e.DriverID).ToList();
+            foreach (var or in orders)
+            {
+                or.Driver.Position = e.Position;
+            }
+        }
+
+        private void Notifier_OnOrderCompleted(object sender, OrderEventArgs e)
+        {
+            var order = this.Orders.FirstOrDefault(or => or.Id == e.OrderId);
+            if (order != null)
+                order.IsDelivered = true;
+        }
+
+       
         private void Meals_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             this.IsCheckOutEnabled = this.CurrentOrder.Meals.Count > 0;

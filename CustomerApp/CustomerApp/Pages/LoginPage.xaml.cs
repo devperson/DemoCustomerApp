@@ -33,6 +33,8 @@ namespace CustomerApp
                 if (res.Success)
                 {
                     user.Id = res.UserId;
+
+                    App.Locator.MainViewModel.OnUserLogedIn();
                     App.Current.MainPage = new MainPage();
                 }
                 else
