@@ -21,7 +21,7 @@
     </JavaMaximumHeapSize>
     <JavaOptions />
     <NuGetPackageImportStamp>c3174fff</NuGetPackageImportStamp>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.2</TargetFrameworkVersion>
     <AndroidUseLatestPlatformSdk>
     </AndroidUseLatestPlatformSdk>
   </PropertyGroup>

@@ -10,6 +10,7 @@ namespace CustomerApp
 {
     public class App : Application
     {
+        public static bool IsDevice { get; set; }
         public static ViewModelLocator Locator { get; set; }        
         public App()
         {

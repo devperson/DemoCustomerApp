@@ -8,6 +8,7 @@ namespace CustomerApp.ViewModels
 {
     public class ViewModelLocator
     {
+        
         public ViewModelLocator()
         {
             this.MainViewModel = new MainViewModel();

@@ -76,13 +76,11 @@ namespace CustomerApp
                     order.Driver.Id = res.DriverId;
                     order.Driver.Position = res.DriverPosition;
                     this.Navigation.RemovePage(this);
-                    this.Navigation.PushAsync(new ActiveOrderPage());
-
-                    
+                    this.Navigation.PushAsync(new ActiveOrderPage());                    
                 }
                 else
                 {
-                    this.DisplayAlert("Error", "Error on sending order", "Close");
+                    this.DisplayAlert("Error", "Error on sending order" + res.Error, "Close");
                 }
             });
         }

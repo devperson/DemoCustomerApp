@@ -21,21 +21,30 @@ namespace CustomerApp
             map.Tap += map_Tap;
 
 
+            ShowCurrentLocation();
+        }
+
+        public void ShowCurrentLocation()
+        {
+            
             var pos = App.Locator.MainViewModel.User.UserAddress.Position;
             var address = App.Locator.MainViewModel.User.UserAddress.AddressText;
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
-            map.Pins.Clear();
-            map.Pins.Add(new Pin { Label = address, Address = address, Position = pos });
-
-            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+            if (address != null)
             {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    this.DisplayAlert(address);                    
-                });                
+                map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
+                map.Pins.Clear();
+                map.Pins.Add(new Pin { Label = address, Address = address, Position = pos });
 
-                return false;
-            });
+                Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        this.DisplayAlert(address);
+                    });
+
+                    return false;
+                });
+            }
         }
 
         private async void DisplayAlert(string address)

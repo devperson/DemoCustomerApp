@@ -77,10 +77,11 @@ namespace CustomerApp.ViewModels
         
         public MainViewModel()
         {
-            if (Debugger.IsAttached)
-                this.ApiUrl = "http://xusanpc:1732/";
+            if (App.IsDevice)
+                this.ApiUrl = "http://demowebserver.apphb.com/";                
             else
-                this.ApiUrl = "http://demowebserver.apphb.com/";
+                this.ApiUrl = "http://xusanpc:1732/";
+
             this.User = new User();
             this.Menu = new ObservableCollection<Menu>();
             this.Orders = new ObservableCollection<Order>();

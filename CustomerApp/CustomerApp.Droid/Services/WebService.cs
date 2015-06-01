@@ -126,25 +126,24 @@ namespace CustomerApp.PCL
                 var errorResponse = new ErrorResponseModel();
                 try
 					{
-                    var restResponse = Client.Execute(restRequest);
-                    this.CheckServer(restResponse.Content);
-                    if (!string.IsNullOrEmpty(restResponse.Content))
-                    {
-                        response = deserialiser(restResponse.Content);// JsonConvert.DeserializeObject<T>(restResponse.Content);
-                        if (restResponse.Content.Contains("ExceptionMessage"))
-                            errorResponse = JsonConvert.DeserializeObject<ErrorResponseModel>(restResponse.Content);
-                        else response.Success = true;
-                    }
-                    else
-                    {                        
-                        errorResponse.ExceptionMessage = "No connection";
-					    response.Success = false;
-                    }
-                    if (errorResponse != null && !string.IsNullOrEmpty(errorResponse.ExceptionMessage))
-                    {
-                        response.Success = false;
-                        response.Error = errorResponse.ExceptionMessage;
-                    }
+                        var restResponse = Client.Execute(restRequest);
+                        this.CheckServer(restResponse.Content);
+                        if (!string.IsNullOrEmpty(restResponse.Content))
+                        {
+                            response = deserialiser(restResponse.Content);
+                            if (restResponse.Content.Contains("ExceptionMessage") || restResponse.Content.Contains("Message"))
+                                errorResponse = JsonConvert.DeserializeObject<ErrorResponseModel>(restResponse.Content);
+                        }
+                        else
+                        {
+                            errorResponse.ExceptionMessage = "There seems to be internet connection problem.";
+                            response.Success = false;
+                        }
+                        if (errorResponse != null && errorResponse.HasErrorMessage)
+                        {
+                            response.Success = false;
+                            response.Error = errorResponse.ErrorMessage;
+                        }
                 }
                 catch (Exception ex)
                 {

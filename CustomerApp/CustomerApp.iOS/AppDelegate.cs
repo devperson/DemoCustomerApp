@@ -32,9 +32,11 @@ namespace CustomerApp.iOS
 
             global::Xamarin.Forms.Forms.Init();
             Xamarin.FormsMaps.Init();
+
+            App.IsDevice = ObjCRuntime.Runtime.Arch == ObjCRuntime.Arch.DEVICE;
+
             LoadApplication(new App());
 
-            
 
             return base.FinishedLaunching(app, options);
         }

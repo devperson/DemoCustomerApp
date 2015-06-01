@@ -49,6 +49,11 @@ namespace CustomerApp
                 userAddress.Position = pos;
                 App.Locator.MainViewModel.User.UserAddress = userAddress;
 
+                if(this.Navigation.NavigationStack.Last() is ConfirmAddressPage)
+                {
+                    (this.Navigation.NavigationStack.Last() as ConfirmAddressPage).ShowCurrentLocation();
+                }
+
                 Debug.WriteLine("User Location resolved!");
             }
             catch (Exception ex)
