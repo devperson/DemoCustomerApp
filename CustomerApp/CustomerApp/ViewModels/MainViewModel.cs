@@ -78,7 +78,7 @@ namespace CustomerApp.ViewModels
         public MainViewModel()
         {
             if (Debugger.IsAttached)
-                this.ApiUrl = "http://localhost:1732/";
+                this.ApiUrl = "http://xusanpc:1732/";
             else
                 this.ApiUrl = "http://demowebserver.apphb.com/";
             this.User = new User();
@@ -124,7 +124,8 @@ namespace CustomerApp.ViewModels
         {
             this.WebService.GetMenu((response) =>
             {
-                this.Menu = new ObservableCollection<Menu>(response.Result);
+                this.Menu = new ObservableCollection<Menu>(response.Menu);
+                this.RaisePropertyChanged(p => p.Menu);
                 this.WebService.GetOrders(this.User.Id, (res) =>
                 {
                     foreach (var or in res.Orders)
@@ -178,16 +179,14 @@ namespace CustomerApp.ViewModels
 
         public void UpdateUserLocation(Action<ResponseBase> action)
         {
-            this.WebService.PostObject("api/customerapi/UpdateUserLocation", new { customerId = this.User.Id, pos = this.User.UserAddress.Position, address = this.User.UserAddress.AddressText }, action);
+            this.WebService.PostObject("api/customerapi/UpdateUserLocation", new { UserId = this.User.Id, Position = this.User.UserAddress.Position, Address = this.User.UserAddress.AddressText }, action);
         }
 
         public void SendOrder(Action<OrderResponse> action)
         {
-            var order = new { customerId = this.User.Id, meals = this.ViewOrder.Meals.Select(m => new { Id = m.Id, Qty = m.Quantity }).ToList() };
+            var order = new { CustomerId = this.User.Id, Details = this.ViewOrder.Meals.Select(m => new { Id = m.Id, Qty = m.Quantity }).ToList() };
 
             this.WebService.PutOrder(order, action);
-        }
-        
-
+        }        
     }
 }

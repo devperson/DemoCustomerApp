@@ -17,6 +17,8 @@
 
       <Entry Text="{Binding Phone}" Keyboard="Numeric" Placeholder="Phone"/>
 
+      <Picker x:Name="genderPicker" Title="Gender" SelectedIndexChanged="genderPicker_SelectionIndexChanged"></Picker>
+
       <Entry Text="{Binding UserName}" Placeholder="User name"/>
 
       <Entry Text="{Binding Password}" Placeholder="Password"/>

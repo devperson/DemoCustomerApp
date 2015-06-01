@@ -62,7 +62,7 @@ namespace CustomerApp.PCL
         {
             var asyncResult = await ExecuteServiceMethod<MenuResponse>("api/customerapi/getmenu", Method.GET, content =>
             {
-                var response = new MenuResponse { Result = JsonConvert.DeserializeObject<List<Menu>>(content), Success = true };
+                var response = JsonConvert.DeserializeObject<MenuResponse>(content);
                 return response;
             });
             if (onCompleted != null)
@@ -84,7 +84,7 @@ namespace CustomerApp.PCL
         {
             var asyncResult = await ExecuteServiceMethod<OrdersResponse>("api/customerapi/GetOrders?customerId=" + cusId, Method.GET, content =>
             {
-                var response = new OrdersResponse { Orders = JsonConvert.DeserializeObject<List<Order>>(content), Success = true };
+                var response = JsonConvert.DeserializeObject<OrdersResponse>(content);
                 return response;
             });
             if (onCompleted != null)

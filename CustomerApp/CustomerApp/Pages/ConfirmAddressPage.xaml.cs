@@ -47,7 +47,9 @@ namespace CustomerApp
                 App.Locator.MainViewModel.UpdateUserLocation((res) =>
                 {
                     if (res.Success)
-                        App.Current.MainPage = new MainPage();                    
+                        App.Current.MainPage = new MainPage();
+                    else
+                        this.DisplayAlert("Error", "Error occured while registering user location.", "Close");
                 });                
             }
         }       

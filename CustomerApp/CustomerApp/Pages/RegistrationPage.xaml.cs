@@ -15,6 +15,15 @@ namespace CustomerApp
             InitializeComponent();
             
             this.BindingContext = App.Locator.MainViewModel.User;
+
+            genderPicker.Items.Add("Male");
+            genderPicker.Items.Add("Female");
+        }
+
+        private void genderPicker_SelectionIndexChanged(object sender, EventArgs e)
+        {
+            var user = App.Locator.MainViewModel.User;
+            user.Gender = genderPicker.Items[genderPicker.SelectedIndex];
         }
 
         private void Submit_Clicked(object sender, EventArgs e)

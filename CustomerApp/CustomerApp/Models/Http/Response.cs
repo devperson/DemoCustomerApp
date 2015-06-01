@@ -22,7 +22,7 @@ namespace CustomerApp.Models.Http
 
     public class MenuResponse : ResponseBase
     {
-        public List<Menu> Result { get; set; }
+        public List<Menu> Menu { get; set; }
     }
 
     public class AuthResponse : ResponseBase
