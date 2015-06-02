@@ -67,6 +67,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.3\lib\portable-net40+sl4+wp7+win8\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Refractored.Xam.Settings">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.1.5.1\lib\MonoAndroid10\Refractored.Xam.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="Refractored.Xam.Settings.Abstractions">
+      <HintPath>..\..\packages\Xam.Plugins.Settings.1.5.1\lib\MonoAndroid10\Refractored.Xam.Settings.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp.MonoDroid">
       <HintPath>..\..\Components\restsharp-104.4.0.1\lib\android\RestSharp.MonoDroid.dll</HintPath>
     </Reference>
@@ -140,6 +146,7 @@
     <AndroidResource Include="Resources\drawable\pin.png" />
     <AndroidResource Include="Resources\drawable\settings.png" />
     <AndroidResource Include="Resources\drawable\car.png" />
+    <Content Include="Properties\_SettingsStarted.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomerApp\CustomerApp.csproj">

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 
 namespace CustomerApp
 {
@@ -74,13 +75,17 @@ namespace CustomerApp
                 {
                     order.Id = res.OrderId;
                     order.Driver.Id = res.DriverId;
-                    order.Driver.Position = res.DriverPosition;
+                    order.Driver.Lat = res.Latitude;
+                    order.Driver.Lon = res.Longitude;
+                    App.Locator.MainViewModel.NotifyDriver();
+
                     this.Navigation.RemovePage(this);
                     this.Navigation.PushAsync(new ActiveOrderPage());                    
                 }
                 else
                 {
-                    this.DisplayAlert("Error", "Error on sending order" + res.Error, "Close");
+                    this.DisplayAlert("Error", "Error on sending order. " + res.Error, "Close");
+                    this.Navigation.PopAsync(true);
                 }
             });
         }

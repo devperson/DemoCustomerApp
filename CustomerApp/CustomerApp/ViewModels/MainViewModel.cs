@@ -74,6 +74,8 @@ namespace CustomerApp.ViewModels
                 return _ntf;
             }
         }
+
+        public event EventHandler<Position> DriverPosisionChanged;
         
         public MainViewModel()
         {
@@ -150,7 +152,14 @@ namespace CustomerApp.ViewModels
             var orders = this.Orders.Where(o => o.Driver.Id == e.DriverID).ToList();
             foreach (var or in orders)
             {
-                or.Driver.Position = e.Position;
+                or.Driver.Lat = e.Position.Latitude;
+                or.Driver.Lon = e.Position.Longitude;
+
+                if(or.Id == this.ViewOrder.Id)
+                {
+                    if (this.DriverPosisionChanged != null)
+                        this.DriverPosisionChanged(this, e.Position);
+                }
             }
         }
 
@@ -185,9 +194,17 @@ namespace CustomerApp.ViewModels
 
         public void SendOrder(Action<OrderResponse> action)
         {
-            var order = new { CustomerId = this.User.Id, Details = this.ViewOrder.Meals.Select(m => new { Id = m.Id, Qty = m.Quantity }).ToList() };
+            var order = new { CustomerId = this.User.Id, Details = this.ViewOrder.Meals.Select(m => new { Id = m.Id, Quantity = m.Quantity }).ToList() };
 
             this.WebService.PutOrder(order, action);
-        }        
+        }
+
+        internal void NotifyDriver()
+        {
+            var msgData = new MsgData();
+            msgData.Data = new OrderEventArgs { OrderId = this.ViewOrder.Id };
+            msgData.To = new List<string> { "Driver" + this.ViewOrder.Driver.Id };
+            this.Notifier.NotifyNewOrderPosted(msgData);
+        }
     }
 }

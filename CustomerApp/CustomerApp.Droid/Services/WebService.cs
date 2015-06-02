@@ -98,7 +98,7 @@ namespace CustomerApp.PCL
         {
             var asyncResult = await ExecuteServiceMethod<ResponseBase>(requestUrl, Method.POST, content =>
             {
-                var response = new ResponseBase();
+                var response = JsonConvert.DeserializeObject<ResponseBase>(content);
                 return response;
             }, obj);
             if (onCompleted != null)

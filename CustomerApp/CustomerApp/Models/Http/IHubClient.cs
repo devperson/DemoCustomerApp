@@ -9,7 +9,7 @@ namespace CustomerApp
 {
     public interface IHubClient
     {
-        void NotifyNewOrderPosted(OrderEventArgs args);
+        void NotifyNewOrderPosted(MsgData args);
         void Initialize(string host, string clientName);
         event EventHandler<DriverEventArgs> OnDriverPositionChanged;
         event EventHandler<OrderEventArgs> OnOrderCompleted;
@@ -24,5 +24,15 @@ namespace CustomerApp
     {
         public int DriverID { get; set; }
         public Position Position { get; set; }
+    }
+
+    public class MsgData
+    {
+        public MsgData()
+        {
+            this.To = new List<string>();
+        }
+        public List<string> To { get; set; }
+        public object Data { get; set; }
     }
 }

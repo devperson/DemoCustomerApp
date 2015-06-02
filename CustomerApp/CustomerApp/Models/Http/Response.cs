@@ -52,7 +52,9 @@ namespace CustomerApp.Models.Http
     {
         public int OrderId { get; set; }
         public int DriverId { get; set; }
-        public Position DriverPosition { get; set; }
+
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }        
     }
 
     public class OrdersResponse : ResponseBase

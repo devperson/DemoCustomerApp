@@ -23,7 +23,7 @@ namespace CustomerApp
         private void Init()
         {
             var pos = App.Locator.MainViewModel.User.UserAddress.Position;
-            var driverPos = App.Locator.MainViewModel.ViewOrder.Driver.Position;
+            var driver = App.Locator.MainViewModel.ViewOrder.Driver;
 
             if (pos != null && pos.Longitude != 0)
             {
@@ -32,22 +32,29 @@ namespace CustomerApp
                 map.Pins.Clear();
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
-                    map.Pins.Add(new Pin { Label = "My Location", Position = pos });                    
-                    map.Pins.Add(new Pin { Label = "Driver Location", Position = driverPos });
+                    map.Pins.Add(new Pin { Label = "My Location", Position = pos });
+                    map.Pins.Add(new Pin { Label = "Driver Location", Position = new Position(driver.Lat, driver.Lon) });
 
                     return false;
                 });
-            }
-
-            this.UpdateDriverLocation();           
+            }   
         }
 
-        bool keepTimer = true;
-        private void UpdateDriverLocation()
+        protected override void OnAppearing()
         {
-            Device.StartTimer(TimeSpan.FromSeconds(10), () =>
+            base.OnAppearing();
+
+            App.Locator.MainViewModel.DriverPosisionChanged += MainViewModel_DriverPosisionChanged;
+        }
+
+        private void MainViewModel_DriverPosisionChanged(object sender, Position newPos)
+        {
+            Device.BeginInvokeOnMainThread(() =>
             {
-                return keepTimer;
+                var oldPin = map.Pins.First(p => p.Label == "Driver Location");
+                map.Pins.Remove(oldPin);
+
+                map.Pins.Add(new Pin { Label = "Driver Location", Position = newPos });
             });
         }
 
@@ -55,7 +62,7 @@ namespace CustomerApp
         {
             base.OnDisappearing();
 
-            keepTimer = false;
+            App.Locator.MainViewModel.DriverPosisionChanged -= MainViewModel_DriverPosisionChanged;
         }
     }
 }

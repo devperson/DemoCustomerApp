@@ -12,7 +12,8 @@ namespace CustomerApp.Models
     {
         public Order()
         {            
-            this.Meals = new ObservableCollection<Menu>();         
+            this.Meals = new ObservableCollection<Menu>();
+            this.Driver = new Driver();
         }
 
         public int Id { get; set; }
@@ -33,6 +34,8 @@ namespace CustomerApp.Models
     public class Driver
     {
         public int Id { get; set; }
-        public Position Position { get; set; }
+
+        public double Lat { get; set; }
+        public double Lon { get; set; }        
     }
 }

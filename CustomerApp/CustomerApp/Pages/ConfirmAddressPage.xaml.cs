@@ -1,5 +1,6 @@
 ﻿using CustomerApp.Controls.Models;
 using Geolocator.Plugin;
+using Refractored.Xam.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,9 @@ namespace CustomerApp
 
         public void ShowCurrentLocation()
         {
-            
+            //App.Locator.MainViewModel.User.UserAddress.Position = new Position(41.2610366907207, 69.1946012154222);
+            //App.Locator.MainViewModel.User.UserAddress.AddressText = "Yakkabag Str. Ташкент Узбекистан";
+
             var pos = App.Locator.MainViewModel.User.UserAddress.Position;
             var address = App.Locator.MainViewModel.User.UserAddress.AddressText;
             if (address != null)
@@ -56,7 +59,13 @@ namespace CustomerApp
                 App.Locator.MainViewModel.UpdateUserLocation((res) =>
                 {
                     if (res.Success)
+                    {
+                        CrossSettings.Current.AddOrUpdateValue<string>("AddressText", App.Locator.MainViewModel.User.UserAddress.AddressText);
+                        CrossSettings.Current.AddOrUpdateValue<double>("Lat", App.Locator.MainViewModel.User.UserAddress.Position.Latitude);
+                        CrossSettings.Current.AddOrUpdateValue<double>("Lon", App.Locator.MainViewModel.User.UserAddress.Position.Longitude);
+
                         App.Current.MainPage = new MainPage();
+                    }
                     else
                         this.DisplayAlert("Error", "Error occured while registering user location.", "Close");
                 });                
@@ -100,9 +109,12 @@ namespace CustomerApp
                 App.Locator.MainViewModel.UpdateUserLocation((res) =>
                 {
                     if (res.Success)
+                    {
+                        CrossSettings.Current.AddOrUpdateValue<Address>("Location", App.Locator.MainViewModel.User.UserAddress);
                         App.Current.MainPage = new MainPage();
+                    }
                     else
-                        this.DisplayAlert("Error", "Error on saving user address.","Close");
+                        this.DisplayAlert("Error", "Error on saving user address.", "Close");
                 });           
             }
         }

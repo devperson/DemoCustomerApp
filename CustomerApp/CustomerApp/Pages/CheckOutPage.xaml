@@ -37,7 +37,7 @@
       </StackLayout>
       <BoxView HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="FillAndExpand"></BoxView>
       
-      <Button BackgroundColor="Red" Text="Confirm Order" WidthRequest="150" HorizontalOptions="Center" Clicked="confirm_Clicked"></Button>
+      <Button BackgroundColor="Red" Text="Confirm Order" TextColor="White" WidthRequest="150" HorizontalOptions="Center" Clicked="confirm_Clicked"></Button>
     </StackLayout>
   </ScrollView>
 </ContentPage>

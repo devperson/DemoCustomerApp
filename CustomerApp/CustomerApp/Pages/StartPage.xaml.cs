@@ -1,5 +1,6 @@
 ﻿using CustomerApp.Controls.Models;
 using Geolocator.Plugin;
+using Refractored.Xam.Settings;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,34 +32,44 @@ namespace CustomerApp
         }
 
         private async void GetPosition()
-        {            
-            var locator = CrossGeolocator.Current;            
-            locator.DesiredAccuracy = 20;
-            try
+        {
+            var addressText = CrossSettings.Current.GetValueOrDefault<string>("AddressText", null);
+
+            if (!string.IsNullOrEmpty(addressText)) //get location from local cache
             {
-                var geoLocation = await locator.GetPositionAsync();
-
-                var pos = new Position(geoLocation.Latitude, geoLocation.Longitude);
-
-                var geo = new Geocoder();
-                var addresses = await geo.GetAddressesForPositionAsync(pos);
-                var addr = addresses.First();
-
-                var userAddress = new Address();
-                userAddress.AddressText = addr;
-                userAddress.Position = pos;
-                App.Locator.MainViewModel.User.UserAddress = userAddress;
-
-                if(this.Navigation.NavigationStack.Last() is ConfirmAddressPage)
-                {
-                    (this.Navigation.NavigationStack.Last() as ConfirmAddressPage).ShowCurrentLocation();
-                }
-
-                Debug.WriteLine("User Location resolved!");
+                App.Locator.MainViewModel.User.UserAddress.AddressText = addressText;
+                App.Locator.MainViewModel.User.UserAddress.Position = new Position(CrossSettings.Current.GetValueOrDefault<double>("Lat", 0), CrossSettings.Current.GetValueOrDefault<double>("Lon", 0));
             }
-            catch (Exception ex)
+            else
             {
-                this.DisplayAlert("Error", "Error on getting current user location: " + ex.Message, "OK");
+                var userAddress = new Address();
+                var locator = CrossGeolocator.Current;
+                locator.DesiredAccuracy = 20;
+                try
+                {
+                    var geoLocation = await locator.GetPositionAsync();
+
+                    var pos = new Position(geoLocation.Latitude, geoLocation.Longitude);
+
+                    var geo = new Geocoder();
+                    var addresses = await geo.GetAddressesForPositionAsync(pos);
+                    var addr = addresses.First();
+
+                    userAddress.AddressText = addr;
+                    userAddress.Position = pos;
+                    App.Locator.MainViewModel.User.UserAddress = userAddress;
+
+                    if (this.Navigation.NavigationStack.Last() is ConfirmAddressPage)
+                    {
+                        (this.Navigation.NavigationStack.Last() as ConfirmAddressPage).ShowCurrentLocation();
+                    }
+
+                    Debug.WriteLine("User Location resolved!");
+                }
+                catch (Exception ex)
+                {
+                    this.DisplayAlert("Error", "Error on getting current user location: " + ex.Message, "OK");
+                }
             }
         }
     }

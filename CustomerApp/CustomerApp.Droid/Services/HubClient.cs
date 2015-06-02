@@ -33,7 +33,7 @@ namespace CustomerApp.Hub
             await connection.Start();
         }
 
-        public async void NotifyNewOrderPosted(OrderEventArgs args)
+        public async void NotifyNewOrderPosted(MsgData args)
         {
             await serverHub.Invoke("Notify_NewOrderPosted", new object[] { args });
         }
