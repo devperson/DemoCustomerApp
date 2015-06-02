@@ -31,9 +31,8 @@ namespace CustomerApp
             var content = sender as ContentView;
             if(App.Locator.MainViewModel.IsCheckOutEnabled)
             {
-                content.Opacity = 0.7;
-                CheckOutPage.Instance = new CheckOutPage();
-                this.Navigation.PushAsync(CheckOutPage.Instance);
+                content.Opacity = 0.7;                
+                this.Navigation.PushAsync(new CheckOutPage());
             }
         }
 

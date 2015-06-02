@@ -61,26 +61,13 @@ namespace CustomerApp
         }
 
         public void confirm_Clicked(object sender, EventArgs e)
-        {            
-            App.Locator.MainViewModel.CurrentOrder.Date = DateTime.Now;
-            var order = App.Locator.MainViewModel.CurrentOrder.DeepClone();            
-            App.Locator.MainViewModel.ViewOrder = order;
-            App.Locator.MainViewModel.ClearMenuSelections();
-            App.Locator.MainViewModel.CurrentOrder = new Order();
-            App.Locator.MainViewModel.Orders.Add(order);            
-
-            App.Locator.MainViewModel.SendOrder((res) => {
-
+        {
+            App.Locator.MainViewModel.SendOrder((res) =>
+            {
                 if (res.Success)
                 {
-                    order.Id = res.OrderId;
-                    order.Driver.Id = res.DriverId;
-                    order.Driver.Lat = res.Latitude;
-                    order.Driver.Lon = res.Longitude;
-                    App.Locator.MainViewModel.NotifyDriver();
-
                     this.Navigation.RemovePage(this);
-                    this.Navigation.PushAsync(new ActiveOrderPage());                    
+                    this.Navigation.PushAsync(new ActiveOrderPage());
                 }
                 else
                 {
@@ -89,8 +76,5 @@ namespace CustomerApp
                 }
             });
         }
-
-        public static CheckOutPage Instance { get; set; }
-
     }
 }

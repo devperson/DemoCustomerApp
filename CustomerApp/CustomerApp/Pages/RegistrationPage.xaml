@@ -1,31 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Registeration"
+             xmlns:controls="clr-namespace:CustomerApp.Controls;assembly=CustomerApp"
+             Title="Customer Registration"
              x:Class="CustomerApp.RegistrationPage">
 
-  <ScrollView>
-    <StackLayout VerticalOptions="Center" Padding="20" Spacing="20">
+  <Grid>
+    <ScrollView VerticalOptions="Fill" HorizontalOptions="Fill">
+        <StackLayout VerticalOptions="Center" Padding="20" Spacing="20">
       
-      <ContentView x:Name="errorMsg" Padding="20" IsVisible="False">
-        <Label x:Name="lblErr" Text="" TextColor="Red"></Label>
-      </ContentView>
+          <ContentView x:Name="errorMsg" Padding="20" IsVisible="False">
+            <Label x:Name="lblErr" Text="" TextColor="Red"></Label>
+          </ContentView>
       
-      <Entry Text="{Binding FirstName}" Placeholder="First Name"/>
+          <Entry Text="{Binding User.FirstName}" Placeholder="First Name"/>
 
-      <Entry Text="{Binding LastName}" Placeholder="Last Name"/>
+          <Entry Text="{Binding User.LastName}" Placeholder="Last Name"/>
 
-      <Entry Text="{Binding Phone}" Keyboard="Numeric" Placeholder="Phone"/>
+          <Entry Text="{Binding User.Phone}" Keyboard="Numeric" Placeholder="Phone"/>
 
-      <Picker x:Name="genderPicker" Title="Gender" SelectedIndexChanged="genderPicker_SelectionIndexChanged"></Picker>
+          <Picker x:Name="genderPicker" Title="Gender" SelectedIndexChanged="genderPicker_SelectionIndexChanged"></Picker>
 
-      <Entry Text="{Binding UserName}" Placeholder="User name"/>
+          <Entry Text="{Binding User.UserName}" Placeholder="User name"/>
 
-      <Entry Text="{Binding Password}" Placeholder="Password"/>
+          <Entry Text="{Binding User.Password}" Placeholder="Password"/>
 
-      <Button Text="Submit" Clicked="Submit_Clicked" BackgroundColor="Green" TextColor="White"></Button>
+          <Button Text="Submit" Clicked="Submit_Clicked" BackgroundColor="Green" TextColor="White"></Button>
 
-    </StackLayout>
-  </ScrollView>
-   
+        </StackLayout>
+     </ScrollView>
+    
+    <controls:ActivityView IsVisible="{Binding IsLoading}" VerticalOptions="Fill" HorizontalOptions="Fill"/>
+  </Grid>
 </ContentPage>

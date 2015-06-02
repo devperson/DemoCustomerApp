@@ -14,7 +14,7 @@ namespace CustomerApp
         {
             InitializeComponent();
             
-            this.BindingContext = App.Locator.MainViewModel.User;
+            this.BindingContext = App.Locator.MainViewModel;
 
             genderPicker.Items.Add("Male");
             genderPicker.Items.Add("Female");
@@ -33,12 +33,14 @@ namespace CustomerApp
             if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password))
             {
                 errorMsg.IsVisible = true;
-                lblErr.Text = "Fill all fields.";
+                lblErr.Text = "Please fill all fields.";
                 return;
             }
 
-            App.Locator.MainViewModel.WebService.RegisterUser(this.BindingContext as User, (res) =>
+            App.Locator.MainViewModel.LoadingCount++;
+            App.Locator.MainViewModel.WebService.RegisterUser(user, (res) =>
             {
+                App.Locator.MainViewModel.LoadingCount--;
                 if (res.Success)
                 {
                     App.Locator.MainViewModel.User.Id = res.UserId;

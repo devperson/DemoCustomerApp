@@ -76,6 +76,24 @@ namespace CustomerApp.ViewModels
         }
 
         public event EventHandler<Position> DriverPosisionChanged;
+
+        int _loadCount;
+        public int LoadingCount
+        {
+            get { return _loadCount; }
+            set
+            {
+                _loadCount = value;
+                this.RaisePropertyChanged(p => p.IsLoading);
+            }
+        }
+        public bool IsLoading
+        {
+            get
+            {
+                return this.LoadingCount > 0;
+            }
+        }
         
         public MainViewModel()
         {
@@ -125,6 +143,7 @@ namespace CustomerApp.ViewModels
 
         private void GetData()
         {
+            this.LoadingCount++;
             this.WebService.GetMenu((response) =>
             {
                 if (response.Success)
@@ -139,6 +158,7 @@ namespace CustomerApp.ViewModels
 
                 this.WebService.GetOrders(this.User.Id, (res) =>
                 {
+                    this.LoadingCount--;
                     if (res.Success)
                     {
                         foreach (var or in res.Orders)
@@ -208,10 +228,30 @@ namespace CustomerApp.ViewModels
         }
 
         public void SendOrder(Action<OrderResponse> action)
-        {
-            var order = new { CustomerId = this.User.Id, Details = this.ViewOrder.Meals.Select(m => new { Id = m.Id, Quantity = m.Quantity }).ToList() };
+        {            
+            this.CurrentOrder.Date = DateTime.Now;
+            var order = this.CurrentOrder.DeepClone();
+            this.ViewOrder = order;
+            this.ClearMenuSelections();
+            this.CurrentOrder = new Order();
+            this.Orders.Add(order);
+            
+            var obj = new { CustomerId = this.User.Id, Details = this.ViewOrder.Meals.Select(m => new { Id = m.Id, Quantity = m.Quantity }).ToList() };
 
-            this.WebService.PutOrder(order, action);
+            this.LoadingCount++;
+            this.WebService.PutOrder(obj, (res) => {
+
+                App.Locator.MainViewModel.LoadingCount--;
+                if (res.Success)
+                {
+                    order.Id = res.OrderId;
+                    order.Driver.Id = res.DriverId;
+                    order.Driver.Lat = res.Latitude;
+                    order.Driver.Lon = res.Longitude;
+                    App.Locator.MainViewModel.NotifyDriver();
+                }
+                action(res);
+            });
         }
 
         internal void NotifyDriver()

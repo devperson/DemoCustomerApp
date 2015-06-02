@@ -14,7 +14,7 @@ namespace CustomerApp
         {
             InitializeComponent();
             
-            this.BindingContext = App.Locator.MainViewModel.User;
+            this.BindingContext = App.Locator.MainViewModel;
         }
 
         private void Submit_Clicked(object sender, EventArgs e)
@@ -28,8 +28,10 @@ namespace CustomerApp
                 return;
             }
 
+            App.Locator.MainViewModel.LoadingCount++;
             App.Locator.MainViewModel.WebService.Login(new { username = user.UserName, password = user.Password }, (res) =>
             {
+                App.Locator.MainViewModel.LoadingCount--;
                 if (res.Success)
                 {
                     user.Id = res.UserId;

@@ -15,7 +15,9 @@ namespace CustomerApp
         {
             InitializeComponent();
 
-            this.ToolbarItems.Add(new ToolbarItem("Cancel", null, () => { }));
+            this.ToolbarItems.Add(new ToolbarItem("Cancel", null, () => {             
+                this.DisplayAlert("Error","Action not supported yet.", "Close");
+            }));
 
             this.Init();
         }

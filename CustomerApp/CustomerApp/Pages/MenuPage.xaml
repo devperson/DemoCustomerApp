@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:con="clr-namespace:CustomerApp.BindingConverters;assembly=CustomerApp"
+             xmlns:controls="clr-namespace:CustomerApp.Controls;assembly=CustomerApp"
              Title="Meals"
              x:Class="CustomerApp.MenuPage">
 
@@ -67,6 +68,7 @@
     <ContentView x:Name="checkOutContent" BackgroundColor="{Binding IsCheckOutEnabled, Converter={StaticResource CheckOutColorConverter}}" Grid.Row="1" VerticalOptions="End" HorizontalOptions="Fill" Padding="10" >
       <Label Text="CheckOut" FontSize="25" TextColor="White" VerticalOptions="Fill" HorizontalOptions="Center"></Label>
     </ContentView>
-    
+
+    <controls:ActivityView Grid.RowSpan="2" IsVisible="{Binding IsLoading}" VerticalOptions="Fill" HorizontalOptions="Fill"/>
   </Grid>
 </ContentPage>
