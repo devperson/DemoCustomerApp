@@ -127,22 +127,37 @@ namespace CustomerApp.ViewModels
         {
             this.WebService.GetMenu((response) =>
             {
-                this.Menu = new ObservableCollection<Menu>(response.Menu);
-                this.RaisePropertyChanged(p => p.Menu);
+                if (response.Success)
+                {
+                    this.Menu = new ObservableCollection<Menu>(response.Menu);
+                    this.RaisePropertyChanged(p => p.Menu);
+                }
+                else
+                {
+                    this.ShowError("Error on getting Menu data. " + response.Error);
+                }
+
                 this.WebService.GetOrders(this.User.Id, (res) =>
                 {
-                    foreach (var or in res.Orders)
+                    if (res.Success)
                     {
-                        foreach (var meal in or.Meals)
+                        foreach (var or in res.Orders)
                         {
-                            meal.Name = this.Menu.First(m => m.Id == meal.Id).Name;
-                            meal.Description = this.Menu.First(m => m.Id == meal.Id).Name;
-                            meal.Price = this.Menu.First(m => m.Id == meal.Id).Price;
-                            meal.Image = this.Menu.First(m => m.Id == meal.Id).Image;
+                            foreach (var meal in or.Meals)
+                            {
+                                meal.Name = this.Menu.First(m => m.Id == meal.Id).Name;
+                                meal.Description = this.Menu.First(m => m.Id == meal.Id).Name;
+                                meal.Price = this.Menu.First(m => m.Id == meal.Id).Price;
+                                meal.Image = this.Menu.First(m => m.Id == meal.Id).Image;
+                            }
                         }
-                    }
 
-                    this.Orders = new ObservableCollection<Order>(res.Orders);
+                        this.Orders = new ObservableCollection<Order>(res.Orders);
+                    }
+                    else
+                    {
+                        this.ShowError("Error on getting orders. " + res.Error);
+                    }                    
                 });
             });
         }
@@ -205,6 +220,12 @@ namespace CustomerApp.ViewModels
             msgData.Data = new OrderEventArgs { OrderId = this.ViewOrder.Id };
             msgData.To = new List<string> { "Driver" + this.ViewOrder.Driver.Id };
             this.Notifier.NotifyNewOrderPosted(msgData);
+        }
+
+        public Func<string, string, string, Task> ShowAlert;
+        public async void ShowError(string errorMessage)
+        {
+            await ShowAlert("Error", errorMessage, "Close");
         }
     }
 }

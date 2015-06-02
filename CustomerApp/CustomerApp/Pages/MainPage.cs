@@ -8,9 +8,7 @@ using Xamarin.Forms;
 namespace CustomerApp
 {
     public class MainPage : MasterDetailPage
-    {
-        
-        
+    {        
         public MainPage()
         {
             this.Title = "Meals";
@@ -41,6 +39,13 @@ namespace CustomerApp
 
             this.Master = sideList;
             this.Detail = new NavigationPage(new MenuPage());	
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            App.Locator.MainViewModel.ShowAlert = this.DisplayAlert;
         }
     }
 }
