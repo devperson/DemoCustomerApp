@@ -23,7 +23,7 @@
 
           <Entry Text="{Binding User.UserName}" Placeholder="User name"/>
 
-          <Entry Text="{Binding User.Password}" Placeholder="Password"/>
+          <Entry Text="{Binding User.Password}" Placeholder="Password" IsPassword="True"/>
 
           <Button Text="Submit" Clicked="Submit_Clicked" BackgroundColor="Green" TextColor="White"></Button>
 
