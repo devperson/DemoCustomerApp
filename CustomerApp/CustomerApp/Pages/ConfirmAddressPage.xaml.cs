@@ -76,11 +76,14 @@ namespace CustomerApp
         {
             var geo = new Geocoder();
             var positions = await geo.GetPositionsForAddressAsync(searchBar.Text);
-            var position = positions.First();
-            
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
-
-            ConfirmLocation(position);
+            if (positions.Any())
+            {
+                var position = positions.First();
+                map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
+                ConfirmLocation(position);
+            }
+            else
+                this.DisplayAlert("Error", "Couldn't get any location for '" + searchBar.Text + "'", "Close");
         }
 
         private void map_Tap(object sender, Controls.TapEventArgs e)
@@ -106,11 +109,14 @@ namespace CustomerApp
             {
                 App.Locator.MainViewModel.User.UserAddress = userAddress;
 
+                int id = App.Locator.MainViewModel.User.Id;
                 App.Locator.MainViewModel.UpdateUserLocation((res) =>
                 {
                     if (res.Success)
                     {
-                        CrossSettings.Current.AddOrUpdateValue<Address>("Location", App.Locator.MainViewModel.User.UserAddress);
+                        CrossSettings.Current.AddOrUpdateValue<string>("AddressText", App.Locator.MainViewModel.User.UserAddress.AddressText);
+                        CrossSettings.Current.AddOrUpdateValue<double>("Lat", App.Locator.MainViewModel.User.UserAddress.Position.Latitude);
+                        CrossSettings.Current.AddOrUpdateValue<double>("Lon", App.Locator.MainViewModel.User.UserAddress.Position.Longitude);
                         App.Current.MainPage = new MainPage();
                     }
                     else

@@ -16,6 +16,7 @@ namespace CustomerApp
         {
             InitializeComponent();
 
+            this.BindingContext = App.Locator.MainViewModel;
             var meals = App.Locator.MainViewModel.CurrentOrder.Meals;
             for (int i = 0; i < meals.Count; i++)
             {

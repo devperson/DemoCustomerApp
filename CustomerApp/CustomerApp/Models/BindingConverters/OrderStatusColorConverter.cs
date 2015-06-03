@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace CustomerApp.Models.BindingConverters
+namespace CustomerApp.BindingConverters
 {
     public class OrderStatusColorConverter : IValueConverter
     {
