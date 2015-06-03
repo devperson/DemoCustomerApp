@@ -20,23 +20,49 @@ namespace CustomerApp
 
             map.IsShowingUser = true;
             map.Tap += map_Tap;
+        }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
 
             ShowCurrentLocation();
         }
-
-        public void ShowCurrentLocation()
+        public async void ShowCurrentLocation()
         {
             //App.Locator.MainViewModel.User.UserAddress.Position = new Position(41.2610366907207, 69.1946012154222);
             //App.Locator.MainViewModel.User.UserAddress.AddressText = "Yakkabag Str. Ташкент Узбекистан";
 
-            var pos = App.Locator.MainViewModel.User.UserAddress.Position;
-            var address = App.Locator.MainViewModel.User.UserAddress.AddressText;
+            var userAddress = new Address();
+            var locator = CrossGeolocator.Current;
+            locator.DesiredAccuracy = 20;
+            try
+            {
+                var geoLocation = await locator.GetPositionAsync();
+
+                var pos = new Position(geoLocation.Latitude, geoLocation.Longitude);
+
+                var geo = new Geocoder();
+                var addresses = await geo.GetAddressesForPositionAsync(pos);
+                var addr = addresses.First();
+
+                userAddress.AddressText = addr;
+                userAddress.Position = pos;
+                App.Locator.MainViewModel.User.Address = userAddress;       
+            }
+            catch (Exception ex)
+            {
+                this.DisplayAlert("Error", "Error on getting current user location: " + ex.Message, "OK");
+
+                return;
+            }
+
+            var address = userAddress.AddressText;
             if (address != null)
             {
-                map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
+                map.MoveToRegion(MapSpan.FromCenterAndRadius(userAddress.Position, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
                 map.Pins.Clear();
-                map.Pins.Add(new Pin { Label = address, Address = address, Position = pos });
+                map.Pins.Add(new Pin { Label = address, Address = address, Position = userAddress.Position });
 
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
@@ -54,15 +80,17 @@ namespace CustomerApp
         {
             var result = await this.DisplayAlert("Delivery Address", address, "Confirm", "Cancel");
             if (result)
-            {
-                var pos = App.Locator.MainViewModel.User.UserAddress.Position;
+            {                
                 App.Locator.MainViewModel.UpdateUserLocation((res) =>
                 {
                     if (res.Success)
                     {
-                        CrossSettings.Current.AddOrUpdateValue<string>("AddressText", App.Locator.MainViewModel.User.UserAddress.AddressText);
-                        CrossSettings.Current.AddOrUpdateValue<double>("Lat", App.Locator.MainViewModel.User.UserAddress.Position.Latitude);
-                        CrossSettings.Current.AddOrUpdateValue<double>("Lon", App.Locator.MainViewModel.User.UserAddress.Position.Longitude);
+                        var user = App.Locator.MainViewModel.User;
+                        int id = user.Id;
+
+                        CrossSettings.Current.AddOrUpdateValue<string>("AddressText" + id, user.Address.AddressText);
+                        CrossSettings.Current.AddOrUpdateValue<double>("Lat" + id, user.Address.Position.Latitude);
+                        CrossSettings.Current.AddOrUpdateValue<double>("Lon" + id, user.Address.Position.Longitude);
 
                         App.Current.MainPage = new MainPage();
                     }
@@ -107,16 +135,17 @@ namespace CustomerApp
             var result = await this.DisplayAlert("Delivery Address", address, "Confirm", "Cancel");
             if (result)
             {
-                App.Locator.MainViewModel.User.UserAddress = userAddress;
+                var user = App.Locator.MainViewModel.User;
+                user.Address = userAddress;
 
-                int id = App.Locator.MainViewModel.User.Id;
+                int id = user.Id;
                 App.Locator.MainViewModel.UpdateUserLocation((res) =>
                 {
                     if (res.Success)
                     {
-                        CrossSettings.Current.AddOrUpdateValue<string>("AddressText", App.Locator.MainViewModel.User.UserAddress.AddressText);
-                        CrossSettings.Current.AddOrUpdateValue<double>("Lat", App.Locator.MainViewModel.User.UserAddress.Position.Latitude);
-                        CrossSettings.Current.AddOrUpdateValue<double>("Lon", App.Locator.MainViewModel.User.UserAddress.Position.Longitude);
+                        CrossSettings.Current.AddOrUpdateValue<string>("AddressText" + id, user.Address.AddressText);
+                        CrossSettings.Current.AddOrUpdateValue<double>("Lat" + id, user.Address.Position.Latitude);
+                        CrossSettings.Current.AddOrUpdateValue<double>("Lon" + id, user.Address.Position.Longitude);
                         App.Current.MainPage = new MainPage();
                     }
                     else

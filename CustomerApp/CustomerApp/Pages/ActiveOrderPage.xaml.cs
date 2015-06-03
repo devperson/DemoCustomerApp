@@ -24,7 +24,7 @@ namespace CustomerApp
 
         private void Init()
         {
-            var pos = App.Locator.MainViewModel.User.UserAddress.Position;
+            var pos = App.Locator.MainViewModel.User.Address.Position;
             var driver = App.Locator.MainViewModel.ViewOrder.Driver;
 
             if (pos != null && pos.Longitude != 0)

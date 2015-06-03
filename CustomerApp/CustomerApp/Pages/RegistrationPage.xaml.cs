@@ -45,7 +45,7 @@ namespace CustomerApp
                 {
                     App.Locator.MainViewModel.User.Id = res.UserId;
 
-                    App.Locator.MainViewModel.OnUserLogedIn();
+                    App.Locator.MainViewModel.OnUserRegistered();
                     this.Navigation.PushAsync(new ConfirmAddressPage());
                 }
                 else

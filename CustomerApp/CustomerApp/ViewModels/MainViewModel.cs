@@ -1,6 +1,8 @@
-﻿using CustomerApp.Models;
+﻿using CustomerApp.Controls.Models;
+using CustomerApp.Models;
 using CustomerApp.Models.Http;
 using Geolocator.Plugin;
+using Refractored.Xam.Settings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -133,12 +135,52 @@ namespace CustomerApp.ViewModels
             //this.Menu.Add(menu3);
         }
 
-        public void OnUserLogedIn()
+        internal void OnUserRegistered()
         {
             this.Notifier.Initialize(this.ApiUrl, "Customer" + this.User.Id.ToString());
             this.Notifier.OnDriverPositionChanged += Notifier_OnDriverPositionChanged;
             this.Notifier.OnOrderCompleted += Notifier_OnOrderCompleted;
             this.GetData();
+        }
+
+        public async void OnUserLogedIn()
+        {
+            this.OnUserRegistered();
+            
+            int id = this.User.Id;
+            var addressText = CrossSettings.Current.GetValueOrDefault<string>("AddressText" + id, null);
+
+            if (!string.IsNullOrEmpty(addressText)) //get location from local cache
+            {
+                this.User.Address.AddressText = addressText;
+                this.User.Address.Position = new Position(CrossSettings.Current.GetValueOrDefault<double>("Lat" + id, 0), CrossSettings.Current.GetValueOrDefault<double>("Lon" + id, 0));
+            }
+            else
+            {
+                var locator = CrossGeolocator.Current;
+                locator.DesiredAccuracy = 20;
+                try
+                {
+                    var geoLocation = await locator.GetPositionAsync();
+
+                    var pos = new Position(geoLocation.Latitude, geoLocation.Longitude);
+
+                    var geo = new Geocoder();
+                    var addresses = await geo.GetAddressesForPositionAsync(pos);
+                    var addr = addresses.First();
+
+                    var userAddress = new Address();
+                    userAddress.AddressText = addr;
+                    userAddress.Position = pos;
+                    this.User.Address = userAddress;
+                    
+                }
+                catch (Exception ex)
+                {
+                    if (this.ShowAlert != null)
+                        this.ShowError("Error on getting current user location: " + ex.Message);
+                }
+            }
         }
 
         private void GetData()
@@ -224,7 +266,7 @@ namespace CustomerApp.ViewModels
 
         public void UpdateUserLocation(Action<ResponseBase> action)
         {
-            this.WebService.PostObject("api/customerapi/UpdateUserLocation", new { UserId = this.User.Id, Position = this.User.UserAddress.Position, Address = this.User.UserAddress.AddressText }, action);
+            this.WebService.PostObject("api/customerapi/UpdateUserLocation", new { UserId = this.User.Id, Position = this.User.Address.Position, Address = this.User.Address.AddressText }, action);
         }
 
         public void SendOrder(Action<OrderResponse> action)
@@ -267,5 +309,7 @@ namespace CustomerApp.ViewModels
         {
             await ShowAlert("Error", errorMessage, "Close");
         }
+
+        
     }
 }
