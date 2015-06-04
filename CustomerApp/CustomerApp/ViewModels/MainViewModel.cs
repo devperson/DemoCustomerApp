@@ -135,7 +135,7 @@ namespace CustomerApp.ViewModels
             //this.Menu.Add(menu3);
         }
 
-        internal void OnUserRegistered()
+        internal void InitSignalRConnection()
         {
             this.Notifier.Initialize(this.ApiUrl, "Customer" + this.User.Id.ToString());
             this.Notifier.OnDriverPositionChanged += Notifier_OnDriverPositionChanged;
@@ -143,13 +143,16 @@ namespace CustomerApp.ViewModels
             this.GetData();
         }
 
+
+        /// <summary>
+        /// User login => create connection to SignalR and get user location (from local cache otherwise use location service).
+        /// </summary>
         public async void OnUserLogedIn()
         {
-            this.OnUserRegistered();
+            this.InitSignalRConnection();
             
             int id = this.User.Id;
             var addressText = CrossSettings.Current.GetValueOrDefault<string>("AddressText" + id, null);
-
             if (!string.IsNullOrEmpty(addressText)) //get location from local cache
             {
                 this.User.Address.AddressText = addressText;
@@ -161,7 +164,7 @@ namespace CustomerApp.ViewModels
                 locator.DesiredAccuracy = 20;
                 try
                 {
-                    var geoLocation = await locator.GetPositionAsync();
+                    var geoLocation = await locator.GetPositionAsync(5000);
 
                     var pos = new Position(geoLocation.Latitude, geoLocation.Longitude);
 

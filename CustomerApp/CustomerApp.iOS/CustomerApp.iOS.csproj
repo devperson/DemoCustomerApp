@@ -105,6 +105,7 @@
     <ITunesArtwork Include="iTunesArtwork" />
     <None Include="packages.config" />
     <ITunesArtwork Include="iTunesArtwork%402x" />
+    <None Include="PluginsHelp\GeolocatorReadme.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomerApp\CustomerApp.csproj">
@@ -131,12 +132,6 @@
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Geolocator.Plugin">
-      <HintPath>..\..\packages\Xam.Plugin.Geolocator.1.0.1\lib\Xamarin.iOS10\Geolocator.Plugin.dll</HintPath>
-    </Reference>
-    <Reference Include="Geolocator.Plugin.Abstractions">
-      <HintPath>..\..\packages\Xam.Plugin.Geolocator.1.0.1\lib\Xamarin.iOS10\Geolocator.Plugin.Abstractions.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client">
       <HintPath>..\..\Components\signalr-2.1.2\lib\ios-unified\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
@@ -180,12 +175,17 @@
       <HintPath>..\..\packages\Xamarin.Forms.1.4.2.6359\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="Geolocator.Plugin">
+      <HintPath>..\..\packages\Xam.Plugin.Geolocator.1.0.2\lib\Xamarin.iOS10\Geolocator.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="Geolocator.Plugin.Abstractions">
+      <HintPath>..\..\packages\Xam.Plugin.Geolocator.1.0.2\lib\Xamarin.iOS10\Geolocator.Plugin.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\img1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="PluginsHelp\GeolocatorReadme.txt" />
     <BundleResource Include="Resources\img1.jpg" />
     <BundleResource Include="Resources\img2.jpg" />
     <BundleResource Include="Resources\img3.JPG" />
