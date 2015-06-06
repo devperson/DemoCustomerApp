@@ -15,3 +15,10 @@
 /CustomerApp/CustomerApp.iOS/Resources/.DS_Store
 /CustomerApp/CustomerApp.Droid/Resources/drawable/Thumbs.db
 /Components/Thumbs.db
+/Components/Android.GeoLocation/Geolocator.Plugin/obj
+/Components/Android.GeoLocation/Geolocator.Plugin/bin
+/Components/Android.GeoLocation/Geolocator.Plugin.Abstractions/obj
+/Components/Android.GeoLocation/Geolocator.Plugin.Abstractions/bin
+/Components/Android.GeoLocation/Geolocator.Plugin.Android/obj
+/Components/Android.GeoLocation/Geolocator.Plugin.Android/bin
+/Components/Android.GeoLocation/Geolocator.Plugin.Android/Geolocator.Plugin.Android.csproj.user

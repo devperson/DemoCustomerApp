@@ -23,7 +23,9 @@ namespace CustomerApp
                     this.Navigation.PushAsync(new ActiveOrderPage());
                 else
                     this.Navigation.PushAsync(new OrderPage());
-            };            
+            };
+
+            App.Locator.MainViewModel.ShowAlert = this.DisplayAlert;
         }
     }
 }

@@ -103,12 +103,6 @@
     <Reference Include="System.Net.Http.Primitives">
       <HintPath>..\..\Components\signalr-2.1.2\lib\android\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="Geolocator.Plugin">
-      <HintPath>..\..\packages\Xam.Plugin.Geolocator.1.0.2\lib\MonoAndroid10\Geolocator.Plugin.dll</HintPath>
-    </Reference>
-    <Reference Include="Geolocator.Plugin.Abstractions">
-      <HintPath>..\..\packages\Xam.Plugin.Geolocator.1.0.2\lib\MonoAndroid10\Geolocator.Plugin.Abstractions.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -123,7 +117,6 @@
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <None Include="PluginsHelp\GeolocatorReadme.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon.png" />
@@ -143,6 +136,14 @@
     <Content Include="Properties\_SettingsStarted.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Components\Android.GeoLocation\Geolocator.Plugin.Abstractions\Geolocator.Plugin.Abstractions.csproj">
+      <Project>{6edb0588-ffc5-4ef5-8a99-9e241d0f878d}</Project>
+      <Name>Geolocator.Plugin.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\Android.GeoLocation\Geolocator.Plugin.Android\Geolocator.Plugin.Android.csproj">
+      <Project>{56a56f17-7de1-4ca1-9617-bf32e971ac84}</Project>
+      <Name>Geolocator.Plugin.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CustomerApp\CustomerApp.csproj">
       <Name>CustomerApp</Name>
       <Project>{AF041EDC-8557-4AF9-92FF-9A0C4A849267}</Project>

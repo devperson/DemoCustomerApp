@@ -38,14 +38,14 @@ namespace CustomerApp
             sideList.Icon = "settings.png";
 
             this.Master = sideList;
-            this.Detail = new NavigationPage(new MenuPage());	
+            this.Detail = new NavigationPage(new MenuPage());
+
+            App.Locator.MainViewModel.ShowAlert = this.DisplayAlert;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            App.Locator.MainViewModel.ShowAlert = this.DisplayAlert;
         }
     }
 }

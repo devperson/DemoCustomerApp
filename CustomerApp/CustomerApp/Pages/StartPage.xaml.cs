@@ -18,6 +18,7 @@ namespace CustomerApp
         {
             InitializeComponent();
 
+            App.Locator.MainViewModel.ShowAlert = this.DisplayAlert;
         }
 
         private void btnLogin_Clicked(object sender, EventArgs e)

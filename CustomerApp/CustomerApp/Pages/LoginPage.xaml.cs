@@ -15,6 +15,8 @@ namespace CustomerApp
             InitializeComponent();
             
             this.BindingContext = App.Locator.MainViewModel;
+
+            App.Locator.MainViewModel.ShowAlert = this.DisplayAlert;
         }
 
         private void Submit_Clicked(object sender, EventArgs e)

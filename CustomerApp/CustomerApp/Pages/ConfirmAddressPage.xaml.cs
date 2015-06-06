@@ -22,6 +22,8 @@ namespace CustomerApp
             this.BindingContext = App.Locator.MainViewModel;
             map.IsShowingUser = true;
             map.Tap += map_Tap;
+
+            App.Locator.MainViewModel.ShowAlert = this.DisplayAlert;
         }
 
         protected override void OnAppearing()

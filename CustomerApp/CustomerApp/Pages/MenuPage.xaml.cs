@@ -24,6 +24,8 @@ namespace CustomerApp
             TapGestureRecognizer g = new TapGestureRecognizer();
             g.Tapped += checkOut_Tapped;
             checkOutContent.GestureRecognizers.Add(g);
+
+            App.Locator.MainViewModel.ShowAlert = this.DisplayAlert;
         }
 
         private void checkOut_Tapped(object sender, EventArgs e)
