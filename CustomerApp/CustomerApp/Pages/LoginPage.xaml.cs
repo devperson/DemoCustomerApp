@@ -27,6 +27,7 @@ namespace CustomerApp
             if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password))
             {
                 errorMsg.IsVisible = true;
+                lbl.Text = "Please fill all fields.";
                 return;
             }
 
@@ -42,7 +43,10 @@ namespace CustomerApp
                     App.Current.MainPage = new MainPage();
                 }
                 else
+                {
+                    lbl.Text = res.Error;
                     errorMsg.IsVisible = true;
+                }
             }); 
         }
     }

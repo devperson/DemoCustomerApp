@@ -91,6 +91,17 @@ namespace CustomerApp.PCL
                 onCompleted(asyncResult);
         }
 
+        public async void GetLastAddress(int custId, Action<LocationResponse> onCompleted)
+        {
+            var asyncResult = await ExecuteServiceMethod<LocationResponse>("api/customerapi/GetLastAddress?customerId=" + custId, Method.GET, content =>
+            {
+                var response = JsonConvert.DeserializeObject<LocationResponse>(content);
+                return response;
+            });
+            if (onCompleted != null)
+                onCompleted(asyncResult);
+        }
+
         /// <summary>
         /// Method provides register object service call.
         /// </summary>    
@@ -104,6 +115,8 @@ namespace CustomerApp.PCL
             if (onCompleted != null)
                 onCompleted(asyncResult);
         }
+
+       
 
        
         /// <summary>
@@ -162,6 +175,9 @@ namespace CustomerApp.PCL
             string htmlContent = "<!DOCTYPE";
             if (responsString.Contains(htmlContent))
                 throw new Exception("Server is down please try later.");
-        }        
+        }
+
+
+       
     }
 }

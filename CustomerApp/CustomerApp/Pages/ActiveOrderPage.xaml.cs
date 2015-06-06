@@ -24,22 +24,33 @@ namespace CustomerApp
 
         private void Init()
         {
-            var pos = App.Locator.MainViewModel.User.Address.Position;
-            var driver = App.Locator.MainViewModel.ViewOrder.Driver;
+            var myPos = App.Locator.MainViewModel.User.Address.Position;
+            var driverPos = new Position(App.Locator.MainViewModel.ViewOrder.Driver.Lat, App.Locator.MainViewModel.ViewOrder.Driver.Lon);
 
-            if (pos != null && pos.Longitude != 0)
+            if (myPos != null && myPos.Longitude != 0)
             {
-                map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
+                map.MoveToRegion(MapSpan.FromCenterAndRadius(myPos, Xamarin.Forms.Maps.Distance.FromMiles(0.5)));
 
                 map.Pins.Clear();
+                bool isAddedPin = false;
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
-                    map.Pins.Add(new Pin { Label = "My Location", Position = pos });
-                    map.Pins.Add(new Pin { Label = "Driver Location", Position = new Position(driver.Lat, driver.Lon) });
+                    if (!isAddedPin)
+                    {
+                        isAddedPin = true;
+                        map.Pins.Add(new Pin { Label = "My Location", Position = myPos });
+                        map.Pins.Add(new Pin { Label = "Driver Location", Position = driverPos });
+                        this.DrawRout(myPos, driverPos);
+                    }
 
                     return false;
                 });
             }   
+        }
+
+        private async void DrawRout(Position myPos, Position driverPos)
+        {
+            await map.CreateRoute(myPos, driverPos);
         }
 
         protected override void OnAppearing()
@@ -57,6 +68,10 @@ namespace CustomerApp
                 map.Pins.Remove(oldPin);
 
                 map.Pins.Add(new Pin { Label = "Driver Location", Position = newPos });
+
+                 var myPos = App.Locator.MainViewModel.User.Address.Position;
+
+                 this.DrawRout(myPos, newPos);
             });
         }
 

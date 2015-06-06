@@ -17,6 +17,7 @@ namespace CustomerApp.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
+        #region Properties
         public string ApiUrl = "";
         private bool _isCheckOutEnabled;
         public bool IsCheckOutEnabled
@@ -96,7 +97,8 @@ namespace CustomerApp.ViewModels
                 return this.LoadingCount > 0;
             }
         }
-        
+        #endregion
+
         public MainViewModel()
         {
             if (App.IsDevice)
@@ -109,30 +111,6 @@ namespace CustomerApp.ViewModels
             this.Orders = new ObservableCollection<Order>();
             this.CurrentOrder = new Order();
             this.CurrentOrder.Meals.CollectionChanged += Meals_CollectionChanged;
-
-            //Menu menu1 = new Menu();
-            //menu1.Name = "CHICKEN AND CHEESE ENCHILADAS";
-            //menu1.Price = 8;
-            //menu1.Description = "homemade chicken & cheese enchiladas with salsa roja, spanish rice, pinto beans & corn (~750 cal)";
-            //menu1.Image = "img1.jpg";//"http://localhost:1732/Images/Products/img1.jpg";
-            ////menu1.AvailableDate = DateTime.Now;
-            //this.Menu.Add(menu1);
-
-            //var menu2 = new Menu();
-            //menu2.Name = "THAI STYLE PORK RICE BOWL";
-            //menu2.Price = 10;
-            //menu2.Description = "spicy minced pork with chilies, mint, lime, bell peppers, steamed jasmine rice & sauteed green beans (~425 cal)";
-            //menu2.Image = "img2.jpg";//"http://localhost:1732/Images/Products/img2.jpg";
-            ////menu2.AvailableDate = DateTime.Now;
-            //this.Menu.Add(menu2);
-
-            //var menu3 = new Menu();
-            //menu3.Name = "FOUR CHEESE RAVIOLI WITH WILD MUSHROOM SAUCE";
-            //menu3.Price = 7;
-            //menu3.Description = "four cheese ravioli with wild mushroom sauce, asparagus, peas, zucchini, sun dried tomatoes & fontina cheese (~700 cal)";
-            //menu3.Image = "img3.jpg";//"http://localhost:1732/Images/Products/img3.jpg";
-            ////menu3.AvailableDate = DateTime.Now;
-            //this.Menu.Add(menu3);
         }
 
         internal void InitSignalRConnection()
@@ -142,12 +120,10 @@ namespace CustomerApp.ViewModels
             this.Notifier.OnOrderCompleted += Notifier_OnOrderCompleted;
             this.GetData();
         }
-
-
         /// <summary>
         /// User login => create connection to SignalR and get user location (from local cache otherwise use location service).
         /// </summary>
-        public async void OnUserLogedIn()
+        public void OnUserLogedIn()
         {
             this.InitSignalRConnection();
             
@@ -160,29 +136,24 @@ namespace CustomerApp.ViewModels
             }
             else
             {
-                var locator = CrossGeolocator.Current;
-                locator.DesiredAccuracy = 20;
-                try
+                this.LoadingCount++;
+                this.WebService.GetLastAddress(this.User.Id, (res) =>
                 {
-                    var geoLocation = await locator.GetPositionAsync(5000);
+                    this.LoadingCount--;
+                    if(res.Success)
+                    {
+                        this.User.Address.AddressText = res.Address;
+                        this.User.Address.Position = new Position(res.Lat, res.Lon);
 
-                    var pos = new Position(geoLocation.Latitude, geoLocation.Longitude);
+                        CrossSettings.Current.AddOrUpdateValue<string>("AddressText" + id, res.Address);
+                        CrossSettings.Current.AddOrUpdateValue<double>("Lat" + id, res.Lat);
+                        CrossSettings.Current.AddOrUpdateValue<double>("Lon" + id, res.Lon);
+                    }
+                    else
+                    {
 
-                    var geo = new Geocoder();
-                    var addresses = await geo.GetAddressesForPositionAsync(pos);
-                    var addr = addresses.First();
-
-                    var userAddress = new Address();
-                    userAddress.AddressText = addr;
-                    userAddress.Position = pos;
-                    this.User.Address = userAddress;
-                    
-                }
-                catch (Exception ex)
-                {
-                    if (this.ShowAlert != null)
-                        this.ShowError("Error on getting current user location: " + ex.Message);
-                }
+                    }
+                });               
             }
         }
 
@@ -195,35 +166,35 @@ namespace CustomerApp.ViewModels
                 {
                     this.Menu = new ObservableCollection<Menu>(response.Menu);
                     this.RaisePropertyChanged(p => p.Menu);
+
+                    this.WebService.GetOrders(this.User.Id, (res) =>
+                    {
+                        this.LoadingCount--;
+                        if (res.Success)
+                        {
+                            foreach (var or in res.Orders)
+                            {
+                                foreach (var meal in or.Meals)
+                                {
+                                    meal.Name = this.Menu.First(m => m.Id == meal.Id).Name;
+                                    meal.Description = this.Menu.First(m => m.Id == meal.Id).Name;
+                                    meal.Price = this.Menu.First(m => m.Id == meal.Id).Price;
+                                    meal.Image = this.Menu.First(m => m.Id == meal.Id).Image;
+                                }
+                            }
+
+                            this.Orders = new ObservableCollection<Order>(res.Orders);
+                        }
+                        else
+                        {
+                            this.ShowError("Error on getting orders. " + res.Error);
+                        }
+                    });
                 }
                 else
                 {
                     this.ShowError("Error on getting Menu data. " + response.Error);
                 }
-
-                this.WebService.GetOrders(this.User.Id, (res) =>
-                {
-                    this.LoadingCount--;
-                    if (res.Success)
-                    {
-                        foreach (var or in res.Orders)
-                        {
-                            foreach (var meal in or.Meals)
-                            {
-                                meal.Name = this.Menu.First(m => m.Id == meal.Id).Name;
-                                meal.Description = this.Menu.First(m => m.Id == meal.Id).Name;
-                                meal.Price = this.Menu.First(m => m.Id == meal.Id).Price;
-                                meal.Image = this.Menu.First(m => m.Id == meal.Id).Image;
-                            }
-                        }
-
-                        this.Orders = new ObservableCollection<Order>(res.Orders);
-                    }
-                    else
-                    {
-                        this.ShowError("Error on getting orders. " + res.Error);
-                    }                    
-                });
             });
         }
 

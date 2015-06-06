@@ -18,6 +18,8 @@ namespace CustomerApp
 
         void GetOrders(int custId, Action<OrdersResponse> onCompleted);
         void PutOrder(object obj, Action<OrderResponse> onCompleted);
+
+        void GetLastAddress(int custId, Action<LocationResponse> onCompleted);
     }
 
    

@@ -61,4 +61,11 @@ namespace CustomerApp.Models.Http
     {
         public List<Order> Orders { get; set; }
     }
+
+    public class LocationResponse : ResponseBase
+    {
+        public double Lat { get; set; }
+        public double Lon { get; set; }
+        public string Address { get; set; }
+    }
 }
