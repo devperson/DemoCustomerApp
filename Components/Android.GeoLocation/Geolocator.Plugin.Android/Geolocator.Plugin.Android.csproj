@@ -74,12 +74,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\..\DemoDriverApp\DriverApp\Components\Android.GeoLocation\Geolocator.Plugin.Android\GeolocatorImplementation.cs">
-      <Link>GeolocatorImplementation.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\DemoDriverApp\DriverApp\Components\Android.GeoLocation\Geolocator.Plugin\CrossGeolocator.cs">
+    <Compile Include="..\Geolocator.Plugin\CrossGeolocator.cs">
       <Link>CrossGeolocator.cs</Link>
     </Compile>
+    <Compile Include="GeolocatorImplementation.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
